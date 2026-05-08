@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes zoom-pulse {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(0.9); }
+}
+
+.animate-zoom-pulse {
+  animation: zoom-pulse 2s ease-in-out infinite;
+}
+
+@theme {
+  --font-sans: "Poppins", sans-serif;
+  --font-serif: "Cinzel", serif;
+
+  /* ── Brand Colors (extracted from PujaPath Sanskar logo) ── */
+  --color-brand-primary:   #e8621a;   /* Deep saffron orange — logo main text */
+  --color-brand-secondary: #f5a020;   /* Golden amber — Om symbol glow */
+  --color-brand-dark:      #7b1a00;   /* Deep maroon — logo outline/dark accent */
+  --color-brand-cream:     #fff5ec;   /* Warm cream — logo circle background */
+  --color-brand-light:     #fff8f0;   /* Lighter warm cream — section backgrounds */
+}
+
+:root {
+  --brand-primary:   #e8621a;
+  --brand-secondary: #f5a020;
+  --brand-dark:      #7b1a00;
+  --brand-cream:     #fff5ec;
+}
+
+:root {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+p, span, li, a, button {
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: clip;
+  max-width: 100vw;
+  width: 100%;
+  position: relative;
+}
+
+#root {
+  overflow-x: clip;
+  max-width: 100vw;
+  width: 100%;
+}
+
+img, video, svg {
+  max-width: 100%;
+}
+
+#main-content {
+  padding-top: 0;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+footer li {
+  list-style: none;
+}
