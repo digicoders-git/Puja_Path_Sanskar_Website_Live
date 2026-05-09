@@ -106,15 +106,28 @@ const Register = () => {
       const fd = new FormData()
       Object.entries(formData).forEach(([k, v]) => {
         if (Array.isArray(v)) {
-          if (v[0] instanceof File) v.forEach(file => fd.append(k, file))
+          if (v.length > 0 && v[0] instanceof File) v.forEach(file => fd.append(k, file))
           else fd.append(k, JSON.stringify(v))
         } else if (v instanceof File) fd.append(k, v)
         else if (v !== null && v !== undefined) fd.append(k, v)
       })
-      await api.post('/pandits', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+      await api.post('/pandits', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 90000,
+      })
       setSubmitted(true)
       setTimeout(() => navigate("/"), 4000)
-    } catch (err) { setApiError(err?.response?.data?.message || "Registration failed.") } finally { setLoading(false) }
+    } catch (err) {
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        setApiError("Server se connect hone me time lag raha hai. Please dobara try karein.")
+      } else if (!err.response) {
+        setApiError("Network error. Internet connection check karein aur dobara try karein.")
+      } else {
+        setApiError(err?.response?.data?.message || "Registration failed. Please try again.")
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   const renderStepIndicator = () => (
@@ -348,9 +361,17 @@ const Register = () => {
                       </div>
                     </div>
                     {stepError && <div className="mt-6 bg-orange-50 text-orange-600 p-3 rounded-lg text-xs font-bold uppercase tracking-wider">⚠️ {stepError}</div>}
+                    {apiError && <div className="mt-4 bg-red-50 text-red-600 p-3 rounded-lg text-xs font-bold">❌ {apiError}</div>}
                     <div className="pt-10 mt-10 border-t border-gray-100 flex gap-4">
                       <button type="button" onClick={prevStep} className="flex-1 bg-white border border-gray-200 text-gray-700 py-4 rounded-lg font-black text-xs uppercase tracking-widest shadow-sm">Back</button>
-                      <button type="submit" disabled={loading} className="flex-[2] bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white py-4 rounded-lg font-black text-xs uppercase tracking-widest shadow-xl">{loading ? "Submitting..." : "Complete Registration"}</button>
+                      <button type="submit" disabled={loading} className="flex-[2] bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white py-4 rounded-lg font-black text-xs uppercase tracking-widest shadow-xl disabled:opacity-70">
+                        {loading ? (
+                          <span className="flex items-center justify-center gap-2">
+                            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
+                            Submitting... Please Wait
+                          </span>
+                        ) : "Complete Registration"}
+                      </button>
                     </div>
                   </div>
                 )}
