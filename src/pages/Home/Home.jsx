@@ -149,9 +149,9 @@ const Home = () => {
             <div className="absolute inset-[-20px] rounded-full border border-[#FFD700]/5 animate-pulse"></div>
             
             {/* Inner Static Logo (Circular) */}
-            <div className="w-full h-full p-8 sm:p-20 opacity-[0.9] flex items-center justify-center">
-               <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#FFD700]/20 shadow-2xl bg-white">
-                  <img src={logoImg} alt="PujaPath Logo" className="w-full h-full object-contain p-2" />
+            <div className="absolute inset-0 flex items-center justify-center p-10 sm:p-24 md:p-28 opacity-[0.9]">
+               <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#FFD700]/20 shadow-2xl bg-white flex items-center justify-center">
+                  <img src={logoImg} alt="PujaPath Logo" className="w-[70%] h-[70%] object-contain" />
                </div>
             </div>
           </div>
