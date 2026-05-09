@@ -92,10 +92,10 @@ const Register = () => {
   }
 
   const nextStep = () => {
-    if (validateStep(step)) { setStep(prev => prev + 1); window.scrollTo(0, 0); }
+    if (validateStep(step)) { setStep(prev => prev + 1); formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   }
 
-  const prevStep = () => { setStep(prev => Math.max(prev - 1, 1)); window.scrollTo(0, 0); }
+  const prevStep = () => { setStep(prev => Math.max(prev - 1, 1)); formSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
