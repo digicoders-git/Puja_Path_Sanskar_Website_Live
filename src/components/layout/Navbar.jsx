@@ -80,6 +80,23 @@ const Navbar = ({ navRef }) => {
   return (
     <>
       <nav ref={navRef} className={`${navBgClass} fixed top-0 left-0 right-0 z-50 w-full`} id="main-navbar">
+        {/* Astrology Top Bar */}
+        <a
+          href="https://astrokanishk.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 sm:gap-3 w-full bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-b border-orange-100 px-4 py-1.5 group hover:from-orange-50 hover:via-amber-50 hover:to-orange-50 transition-colors duration-300"
+        >
+          <span className="text-base">🔮</span>
+          <p className="text-[11px] sm:text-xs text-gray-600 font-medium">
+            <span className="font-bold text-[#e8621a]">Need Astrology Consultation?</span>
+            <span className="hidden sm:inline text-gray-500"> — Kundli, Vastu & Jyotish guidance by </span>
+            <span className="font-black text-gray-800">Astro Kanishk</span>
+          </p>
+          <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black text-[#e8621a] bg-[#e8621a]/10 border border-[#e8621a]/20 px-2.5 py-0.5 rounded-full group-hover:bg-[#e8621a] group-hover:text-white transition-all duration-300 whitespace-nowrap">
+            Visit Now →
+          </span>
+        </a>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 shrink-0 group">
             <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 ${borderClass} shadow-lg shrink-0 transform group-hover:scale-105 transition-all duration-300 bg-white p-1`}>
