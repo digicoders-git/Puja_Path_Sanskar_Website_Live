@@ -47,10 +47,10 @@ const Contact = () => {
 
             <div className="flex flex-col gap-4">
               {[
-                { icon: <FiPhone size={22} />, title: "Phone", lines: ["+91 98765 43210", "+91 91234 56789"] },
-                { icon: <FiMail size={22} />, title: "Email", lines: ["support@panditji.in", "booking@panditji.in"] },
-                { icon: <FiMapPin size={22} />, title: "Address", lines: ["123, Puja Nagar, Varanasi", "Uttar Pradesh - 221001"] },
-                { icon: <FiClock size={22} />, title: "Working Hours", lines: ["Monday – Saturday", "9:00 AM – 7:00 PM"] },
+                { icon: <FiPhone size={22} />, title: "Phone", lines: ["+91 8433344459"] },
+                { icon: <FiMail size={22} />, title: "Email", lines: ["support@pujapathsanskar.com"] },
+                { icon: <FiMapPin size={22} />, title: "Address", lines: ["Gomti Nagar Extension Lucknow 226028"] },
+                { icon: <FiClock size={22} />, title: "Support connect", lines: ["24*7"] },
               ].map((item) => (
                 <div key={item.title} className="group flex items-start gap-4 p-4 rounded-2xl bg-white border border-gray-100 hover:shadow-[0_8px_25px_rgba(242,141,88,0.1)] hover:border-[#e8621a]/20 transition-all duration-300">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/15 flex items-center justify-center text-[#e8621a] shrink-0 group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(242,141,88,0.2)] transition-all duration-300">
@@ -199,7 +199,7 @@ const Contact = () => {
               { q: "Are all pandits verified?", a: "Yes, every pandit on our platform goes through a thorough background check and verification process before listing." },
               { q: "Can I cancel a booking?", a: "Yes, bookings can be cancelled up to 24 hours before the scheduled puja. Contact us for assistance." },
               { q: "How do I register as a pandit?", a: "Click the 'Register' button in the navbar, select 'I am a Pandit', fill in your details and submit for verification." },
-              { q: "What pujas are available?", a: "We offer 12+ puja types including Vivah, Griha Pravesh, Satyanarayan, Ganesh Puja, Havan, Namkaran and more." },
+              { q: "What pujas are available?", a: "We offer 50+ puja types including Vivah, Griha Pravesh, Satyanarayan, Ganesh Puja, Havan, Namkaran and more." },
               { q: "Is there a service charge?", a: "No hidden charges. The price shown on the pandit's profile is the starting price. Final price is agreed with the pandit." },
             ].map((faq) => (
               <div key={faq.q} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-[0_8px_25px_rgba(242,141,88,0.08)] transition-all duration-300">
@@ -215,7 +215,7 @@ const Contact = () => {
       </section>
 
       {/* Office Locations */}
-      <section className="relative py-20 px-4 sm:px-6 bg-white overflow-hidden">
+      {/* <section className="relative py-20 px-4 sm:px-6 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-gray-800">
@@ -243,7 +243,7 @@ const Contact = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Banner */}
       <section className="relative py-20 px-4 sm:px-6 overflow-hidden">

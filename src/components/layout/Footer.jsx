@@ -134,10 +134,10 @@ const Footer = () => {
           </h3>
           <ul className="space-y-4">
             {[
-              { icon: <FiMail size={15} />, text: "support@pujapath.in" },
-              { icon: <FiPhone size={15} />, text: "+91 98765 43210" },
-              { icon: <FiClock size={15} />, text: "Mon–Sat, 9am–7pm" },
-              { icon: <FiMapPin size={15} />, text: "123, Puja Nagar, Varanasi, UP" },
+              { icon: <FiMail size={15} />, text: "support@pujapathsanskar.com" },
+              { icon: <FiPhone size={15} />, text: "+91 8433344459" },
+              { icon: <FiClock size={15} />, text: "Support connect 24*7" },
+              { icon: <FiMapPin size={15} />, text: "Gomti Nagar Extension Lucknow 226028" },
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-3 group cursor-default">
                 <div className="w-8 h-8 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#e8621a] shrink-0 group-hover:bg-[#e8621a] group-hover:text-white transition-all duration-300">

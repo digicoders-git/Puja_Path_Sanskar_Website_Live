@@ -355,7 +355,7 @@ const Pujas = () => {
 
           <div className="flex flex-wrap gap-3 justify-center">
             {[
-              { label: "Puja Types", val: "12+" },
+              { label: "Puja Types", val: "50+" },
               { label: "Verified Pandits", val: "5000+" },
               { label: "Pujas Done", val: "1 Lakh+" },
               { label: "Cities Covered", val: "50+" },
