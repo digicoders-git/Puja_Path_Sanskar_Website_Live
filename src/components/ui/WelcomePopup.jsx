@@ -73,7 +73,7 @@ const WelcomePopup = () => {
             </div>
             <h2 className="text-[22px] font-black text-white leading-tight">
               Aapka Swagat Hai 🙏<br />
-              <span className="text-white/80 text-base font-semibold">Puja Paath Sanskar App 🚩</span>
+              <span className="text-white/80 text-base font-semibold">Puja Path Sanskar App 🚩</span>
             </h2>
           </div>
         </div>
@@ -93,7 +93,7 @@ const WelcomePopup = () => {
               <div>
                 <p className="text-sm font-black text-gray-800 leading-tight">पंडित जी, अब ऑनलाइन बढ़िए! 🙏</p>
                 <p className="text-[11px] text-gray-600 font-medium leading-relaxed mt-1">
-                  Puja Paath Sanskar App से जुड़कर घर बैठे नए यजमान और पूजा बुकिंग प्राप्त करें।
+                  Puja Path Sanskar App से जुड़कर घर बैठे नए यजमान और पूजा बुकिंग प्राप्त करें।
                 </p>
                 <div className="flex items-center gap-1 text-[#e8621a] text-[11px] font-black uppercase tracking-widest mt-2 group-hover:gap-2 transition-all">
                   Pregistration Karein <FiArrowRight />
