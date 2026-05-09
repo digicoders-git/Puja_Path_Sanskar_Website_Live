@@ -37,7 +37,7 @@ const Register = () => {
     alternateNumber: "", emailId: "", dob: "", gender: "",
     currentAddress: "", permanentAddress: "", pincode: "",
     aadharNumber: "", panCard: "", trainingGurukul: "",
-    basicPujaCharges: "", akhandPaathCharges: "", perDayCharges: "", travelCharges: "",
+    basicPujaCharges: "", akhandPathCharges: "", perDayCharges: "", travelCharges: "",
     mantraLevel: "", timeDiscipline: "", dressCode: "", eventHandling: "",
     bhajanKirtan: false, astrology: false, vastu: false, havan: false, corporateExperience: false,
     availableCities: [], travelWillingness: "", maxDistance: "",
@@ -167,7 +167,7 @@ const Register = () => {
                   अब अपनी पूजा सेवा को ऑनलाइन बढ़ाइए।
                 </p>
                 <p className="text-gray-600 font-medium mb-8 leading-relaxed">
-                  Puja Paath Sanskar App से जुड़कर घर बैठे नए यजमान और पूजा बुकिंग प्राप्त करें।
+                  Puja Path Sanskar App से जुड़कर घर बैठे नए यजमान और पूजा बुकिंग प्राप्त करें।
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mb-10">
@@ -302,7 +302,7 @@ const Register = () => {
                     
                     <div className="bg-[#e8621a]/5 p-6 rounded-xl border border-[#e8621a]/20 mb-8">
                        <p className="text-sm font-bold text-[#e8621a] mb-2 italic">Namaskar Pandit Ji,</p>
-                       <p className="text-xs text-gray-600 leading-relaxed font-medium">Aapka prarambhik registration safalta purvak select ho gaya hai. Kripya niche diye gaye Verification & Media Upload ko complete karein taki aapki profile Puja Paath Sanskar App me live ki ja sake.</p>
+                       <p className="text-xs text-gray-600 leading-relaxed font-medium">Aapka prarambhik registration safalta purvak select ho gaya hai. Kripya niche diye gaye Verification & Media Upload ko complete karein taki aapki profile Puja Path Sanskar App me live ki ja sake.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
