@@ -57,7 +57,7 @@ export const VideoThumbnail = ({ image, title, duration, onClick, vertical = fal
   return (
     <div
       onClick={onClick}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_10px_30px_rgba(242,141,88,0.2)] transition-all duration-300 border border-gray-100 bg-black ${vertical ? "aspect-[9/16]" : "aspect-video"}`}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-[0_10px_30px_rgba(242,141,88,0.2)] transition-all duration-300 border border-gray-100 bg-black ${vertical ? "aspect-[3/4]" : "aspect-video"}`}
     >
       <img src={image} alt={title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">

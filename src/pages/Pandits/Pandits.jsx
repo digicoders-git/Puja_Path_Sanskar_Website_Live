@@ -38,7 +38,9 @@ const Pandits = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const searchQuery = new URLSearchParams(location.search).get("search") || ""
+  const queryParams = new URLSearchParams(location.search)
+  const searchQuery = queryParams.get("search") || ""
+  const cityQuery = queryParams.get("city") || "All Cities"
 
   // Experience range helper
   const getExpRange = (exp) => {
@@ -75,7 +77,16 @@ const Pandits = () => {
       .finally(() => setPanditsLoading(false))
   }
 
-  useEffect(() => { fetchPandits() }, [])
+  useEffect(() => { 
+    const initialFilters = { 
+      city: cityQuery, 
+      specializations: searchQuery ? [searchQuery] : [], 
+      experience: "", 
+      rating: "" 
+    }
+    setFilters(initialFilters)
+    fetchPandits(initialFilters) 
+  }, [searchQuery, cityQuery])
 
   useEffect(() => {
     if (searchQuery) setCurrentPage(1)

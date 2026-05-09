@@ -6,6 +6,7 @@ import PanditCard from "../../components/ui/PanditCard"
 import FilterSidebar from "../../components/ui/FilterSidebar"
 import VideoModal, { VideoThumbnail } from "../../components/ui/VideoModal"
 import AppDownloadModal from "../../components/ui/AppDownloadModal"
+import { FaGooglePlay, FaApple } from "react-icons/fa"
 import {
   MapPin, Phone, ArrowRight, Calendar, 
   ShieldCheck, Star, MessageSquare, UserPlus, 
@@ -138,28 +139,28 @@ const Home = () => {
     <div className="bg-gray-50 min-h-screen w-full overflow-x-hidden ">
 
       {/* Hero */}
-      <section className="relative z-30 min-h-screen flex flex-col items-center justify-center bg-[#fffcf9] pt-24 md:pt-32">
-        {/* Rotating Background */}
-        <div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden">
-          <div className="relative w-[120vw] h-[120vw] sm:w-[90vw] sm:h-[90vw] md:w-[80vw] md:h-[80vw] lg:w-[70vw] lg:h-[70vw]">
+      <section className="relative z-30 min-h-screen flex flex-col items-center justify-center bg-[#fffcf9] pt-20 md:pt-24 overflow-hidden">
+        {/* Logo and Rotating Rings Container */}
+        <div className="relative flex items-center justify-center mb-12 sm:mb-20">
+          <div className="relative w-64 h-64 sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] flex items-center justify-center">
             {/* Vibrant Golden Rotating Dashed Ring */}
             <div className="absolute inset-0 rounded-full border-[3px] border-dashed border-[#FFD700]/40 animate-[spin_40s_linear_infinite] shadow-[0_0_50px_rgba(255,215,0,0.15)]"></div>
             <div className="absolute inset-4 rounded-full border-[1.5px] border-dotted border-[#FFD700]/30 animate-[spin_25s_linear_reverse_infinite]"></div>
             <div className="absolute inset-[-20px] rounded-full border border-[#FFD700]/5 animate-pulse"></div>
             
             {/* Inner Static Logo (Circular) */}
-            <div className="absolute inset-0 flex items-center justify-center p-12 md:p-40 opacity-[0.35]">
-               <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#FFD700]/20 shadow-2xl">
-                  <img src={logoImg} alt="PujaPath Logo" className="w-full h-full object-cover" />
+            <div className="w-full h-full p-8 sm:p-20 opacity-[0.9] flex items-center justify-center">
+               <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#FFD700]/20 shadow-2xl bg-white">
+                  <img src={logoImg} alt="PujaPath Logo" className="w-full h-full object-contain p-2" />
                </div>
             </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-orange-50/80 pointer-events-none"></div>
+
           {/* Warm glow at center */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,141,88,0.1)_0%,transparent_70%)] pointer-events-none"></div>
         </div>
         
-        <div className="max-w-6xl mx-auto text-center relative z-10 mt-24 md:mt-28 px-4 flex flex-col items-center w-full">
+        <div className="max-w-6xl mx-auto text-center relative z-10 px-4 flex flex-col items-center w-full">
           {/* Glowing Emblem/Logo */}
           {/* <div className="relative mb-4 group cursor-pointer">
             <div className="absolute inset-0 bg-[#e8621a] rounded-full blur-2xl opacity-10 group-hover:opacity-30 transition-opacity duration-500"></div>
@@ -169,8 +170,8 @@ const Home = () => {
           </div> */}
           
           {/* Main Heading */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-3 leading-snug text-gray-800 drop-shadow-sm tracking-normal">
-            Har Puja Ke Liye Sahi Pandit
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-4 leading-[1.2] sm:leading-snug text-gray-800 drop-shadow-sm tracking-tight uppercase">
+            Har Puja Ke Liye <br className="sm:hidden" /> Sahi Pandit
           </h1>
           
           {/* Subtitle */}
@@ -187,163 +188,24 @@ const Home = () => {
             <Calendar size={16} /> Book Now
           </button>
 
-          {/* Highlight Video Cards (Small, Auto-playing, Marquee) */}
-          <div className="mb-10 w-full max-w-5xl overflow-hidden z-30 relative px-4">
-            <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-black/60 to-transparent z-40 pointer-events-none"></div>
-            <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-black/60 to-transparent z-40 pointer-events-none"></div>
-            <div className="animate-marquee gap-3 md:gap-5 py-2">
-              {[
-                { id: 1, title: "Havan Highlights", duration: "0:20", thumb: "/hawan.png", video: "/puja.mp4" },
-                { id: 2, title: "Vivah Puja", duration: "0:30", thumb: "/shadi.png", video: "/puja.mp4" },
-                { id: 3, title: "Puja Ceremony", duration: "0:15", thumb: "/puja.png", video: "/puja.mp4" },
-                { id: 4, title: "Griha Pravesh", duration: "0:45", thumb: "/hawan.png", video: "/puja.mp4" },
-                // Duplicate for seamless marquee
-                { id: 5, title: "Havan Highlights", duration: "0:20", thumb: "/hawan.png", video: "/puja.mp4" },
-                { id: 6, title: "Vivah Puja", duration: "0:30", thumb: "/shadi.png", video: "/puja.mp4" },
-                { id: 7, title: "Puja Ceremony", duration: "0:15", thumb: "/puja.png", video: "/puja.mp4" },
-                { id: 8, title: "Griha Pravesh", duration: "0:45", thumb: "/hawan.png", video: "/puja.mp4" }
-              ].map((vid) => (
-                <div 
-                  key={vid.id}
-                  onClick={() => setActiveVideo({
-                    title: vid.title,
-                    subtitle: "Real ceremony performed by our verified pandits.",
-                    src: vid.video
-                  })}
-                  className="relative shrink-0 w-32 h-44 sm:w-40 sm:h-56 md:w-48 md:h-64 rounded-2xl overflow-hidden cursor-pointer group shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-2 border-white/10 hover:border-[#e8621a]/60 hover:-translate-y-2 transition-all duration-300"
-                >
-                  {/* Background Image as thumbnail, Video plays on hover */}
-                  <img src={vid.thumb} alt={vid.title} className="absolute inset-0 w-full h-full object-cover z-0 group-hover:opacity-0 transition-opacity duration-300" />
-                  <video 
-                    src={vid.video}
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  ></video>
-                  
-                  {/* Overlay & Text */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10 flex flex-col justify-end p-3">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/40 group-hover:scale-110 group-hover:bg-[#e8621a] group-hover:border-[#e8621a] transition-all duration-300 opacity-80 group-hover:opacity-100">
-                        <div className="ml-1 w-0 h-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-white"></div>
-                    </div>
-                    <h4 className="text-white font-bold text-xs sm:text-sm leading-tight drop-shadow-md z-20">{vid.title}</h4>
-                    <p className="text-[#e8621a] text-[10px] font-black z-20 mt-1 uppercase">{vid.duration}</p>
+
+          {/* Bottom Feature List (Now part of the flow to avoid overlap) */}
+          <div className="w-full mt-6 pb-2">
+            <div className="max-w-6xl mx-auto">
+              {/* Mobile: 2x2 grid | Desktop: single row */}
+              <div className="grid grid-cols-2 sm:flex sm:flex-row sm:justify-center sm:items-center sm:gap-x-10 gap-x-4 gap-y-3">
+                {[
+                  "100% Verified Pandits",
+                  "50+ Cities",
+                  "Secure Booking",
+                  "4.8 Avg Rating"
+                ].map((item, i) => (
+                  <div key={item} className="flex items-center justify-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#e8621a] shrink-0"></span>
+                    <span className="text-[10px] sm:text-xs font-bold text-gray-500 tracking-widest uppercase whitespace-nowrap">{item}</span>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Search Bar Container */}
-          <div className="w-full max-w-4xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 p-2 sm:p-3 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.4)] mb-16 flex flex-col sm:flex-row items-center gap-2 relative z-20">
-            
-            {/* City Free-text Search */}
-            <div className="w-full sm:w-64 bg-white rounded-2xl flex items-center px-4 py-3.5 sm:py-4 transition-all focus-within:ring-2 focus-within:ring-[#e8621a] relative" ref={dropdownRef}>
-              <MapPin className="text-[#e8621a] shrink-0 mr-3" size={22} />
-              <input
-                type="text"
-                placeholder="Search city or district..."
-                className="w-full bg-transparent outline-none text-gray-700  text-sm sm:text-base placeholder-gray-400"
-                value={filters.city === "All Cities" ? "" : filters.city}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setFilters({ ...filters, city: val.trim() === "" ? "All Cities" : val });
-                  setShowCityDropdown(val.trim().length > 0);
-                }}
-                onFocus={() => setShowCityDropdown(true)}
-              />
-              {filters.city !== "All Cities" && (
-                <button
-                  onClick={() => { setFilters({ ...filters, city: "All Cities" }); setShowCityDropdown(false); }}
-                  className="ml-2 text-gray-300 hover:text-gray-500 transition-colors shrink-0"
-                >
-                  <ChevronDown size={16} />
-                </button>
-              )}
-
-              {/* Live Suggestion Dropdown */}
-              {showCityDropdown && (
-                <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-gray-100 max-h-60 overflow-y-auto z-[999] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                  {cities
-                    .filter(city =>
-                      filters.city === "All Cities" || filters.city === ""
-                        ? true
-                        : city.toLowerCase().includes(filters.city.toLowerCase())
-                    )
-                    .slice(0, 8)
-                    .map(city => (
-                      <div
-                        key={city}
-                        className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer text-gray-600 font-bold hover:text-[#e8621a] transition-colors flex items-center gap-2"
-                        onMouseDown={() => { setFilters({ ...filters, city }); setShowCityDropdown(false); }}
-                      >
-                        <MapPin size={12} className="text-[#e8621a] shrink-0" /> {city}
-                      </div>
-                    ))
-                  }
-                  {cities.filter(city =>
-                    filters.city === "All Cities" || filters.city === ""
-                      ? false
-                      : city.toLowerCase().includes(filters.city.toLowerCase())
-                  ).length === 0 && (
-                    <div className="px-4 py-3 text-gray-400 text-sm font-medium text-center">
-                      No city found — showing all pandits
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Divider (Desktop only) */}
-            <div className="hidden sm:block w-px h-10 bg-white/30 shrink-0"></div>
-
-            {/* Puja/Pandit Search Input */}
-            <div className="w-full sm:flex-[1.5] bg-white rounded-2xl flex items-center px-4 py-3.5 sm:py-4 transition-all focus-within:ring-2 focus-within:ring-[#e8621a]">
-              <Search className="text-[#e8621a] shrink-0 mr-3" size={24} />
-              <input 
-                type="text" 
-                placeholder="Search 'Satyanarayan' or 'Astrologer'..." 
-                className="w-full bg-transparent outline-none text-gray-700  text-sm sm:text-base placeholder-gray-400"
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (val.trim() !== '') {
-                    setFilters({...filters, specializations: [val]});
-                  } else {
-                    setFilters({...filters, specializations: []});
-                  }
-                }}
-              />
-            </div>
-
-            {/* Search Button */}
-            <button 
-              onClick={() => document.getElementById("pandit-listing")?.scrollIntoView({ behavior: "smooth" })}
-              className="w-full sm:w-auto bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-semibold px-8 py-4 rounded-2xl hover:shadow-[0_0_25px_rgba(242,141,88,0.8)] hover:-translate-y-1 transition-all flex items-center justify-center gap-2 uppercase tracking-widest shrink-0"
-            >
-              Search
-            </button>
-
-          </div>
-        </div>
-
-        {/* Bottom Feature List */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-5 px-4 w-full">
-          <div className="max-w-6xl mx-auto">
-            {/* Mobile: 2x2 grid | Desktop: single row */}
-            <div className="grid grid-cols-2 sm:flex sm:flex-row sm:justify-center sm:items-center sm:gap-x-6 gap-x-2 gap-y-2">
-              {[
-                "100% Verified Pandits",
-                "50+ Cities",
-                "Secure Booking",
-                "4.8 Avg Rating"
-              ].map((item, i) => (
-                <div key={item} className="flex items-center justify-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#e8621a] shrink-0"></span>
-                  <span className="text-[11px] sm:text-xs font-semibold text-white/90 tracking-wider uppercase drop-shadow-md whitespace-nowrap">{item}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -373,6 +235,58 @@ const Home = () => {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+
+      {/* Highlight Video Cards (Small, Auto-playing, Marquee) */}
+      <section className="w-full flex flex-col items-center overflow-hidden py-10 relative z-20">
+        <div className="w-full max-w-5xl overflow-hidden z-30 relative px-4">
+          <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-[#fffcf9] to-transparent z-40 pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[#fffcf9] to-transparent z-40 pointer-events-none"></div>
+          <div className="animate-marquee gap-3 md:gap-5 py-2">
+            {[
+              { id: 1, title: "Havan Highlights", duration: "0:20", thumb: "/hawan.png", video: "/havan.mp4" },
+              { id: 2, title: "Vivah Puja", duration: "0:30", thumb: "/shadi.png", video: "/vivah.mp4" },
+              { id: 3, title: "Puja Ceremony", duration: "0:15", thumb: "/puja.png", video: "/puja.mp4" },
+              { id: 4, title: "Griha Pravesh", duration: "0:45", thumb: "/hawan.png", video: "/gruhpravesh.mp4" },
+              // Duplicate for seamless marquee
+              { id: 5, title: "Havan Highlights", duration: "0:20", thumb: "/hawan.png", video: "/havan.mp4" },
+              { id: 6, title: "Vivah Puja", duration: "0:30", thumb: "/shadi.png", video: "/vivah.mp4" },
+              { id: 7, title: "Puja Ceremony", duration: "0:15", thumb: "/puja.png", video: "/puja.mp4" },
+              { id: 8, title: "Griha Pravesh", duration: "0:45", thumb: "/hawan.png", video: "/gruhpravesh.mp4" }
+            ].map((vid) => (
+              <div 
+                key={vid.id}
+                onClick={() => setActiveVideo({
+                  title: vid.title,
+                  subtitle: "Real ceremony performed by our verified pandits.",
+                  src: vid.video
+                })}
+                className="relative shrink-0 w-32 h-44 sm:w-40 sm:h-56 md:w-48 md:h-64 rounded-2xl overflow-hidden cursor-pointer group shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-2 border-white/10 hover:border-[#e8621a]/60 hover:-translate-y-2 transition-all duration-300"
+              >
+                {/* Background Image as thumbnail, Video plays on hover */}
+                <img src={vid.thumb} alt={vid.title} className="absolute inset-0 w-full h-full object-cover z-0 group-hover:opacity-0 transition-opacity duration-300" />
+                <video 
+                  src={vid.video}
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                ></video>
+                
+                {/* Overlay & Text */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10 flex flex-col justify-end p-3">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/40 group-hover:scale-110 group-hover:bg-[#e8621a] group-hover:border-[#e8621a] transition-all duration-300 opacity-80 group-hover:opacity-100">
+                      <div className="ml-1 w-0 h-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-white"></div>
+                  </div>
+                  <h4 className="text-white font-bold text-xs sm:text-sm leading-tight drop-shadow-md z-20">{vid.title}</h4>
+                  <p className="text-[#e8621a] text-[10px] font-black z-20 mt-1 uppercase">{vid.duration}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -742,7 +656,7 @@ const Home = () => {
           {/* Featured Video Testimonial */}
           <div className="mb-12 max-w-4xl mx-auto bg-[#fffaf4] rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-8 shadow-sm border border-gray-100 relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-[#e8621a] to-[#f5a020]"></div>
-            <div className="w-full md:w-1/3 shrink-0 relative z-10">
+            <div className="w-full md:w-1/4 shrink-0 relative z-10">
               <VideoThumbnail 
                 image="/shadi.png"
                 title="Sharma Family's Experience"
@@ -923,29 +837,29 @@ const Home = () => {
       </section>
 
       {/* ─── App Download Section ─── */}
-      <section className="relative py-20 px-4 sm:px-6 overflow-hidden bg-[#0a0503]">
+      <section className="relative py-20 px-4 sm:px-6 overflow-hidden bg-[#fff8f0]">
         {/* Background glow blobs */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#e8621a]/10 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#f5a020]/10 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#e8621a]/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#f5a020]/5 rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2"></div>
         {/* Subtle dot grid */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "28px 28px" }}></div>
+        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #e8621a 1px, transparent 0)", backgroundSize: "28px 28px" }}></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
 
             {/* Left — Content */}
-            <div className="flex-1 text-white">
+            <div className="flex-1">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 bg-[#e8621a]/15 border border-[#e8621a]/30 rounded-full px-4 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-[#e8621a]/10 border border-[#e8621a]/20 rounded-full px-4 py-2 mb-6">
                 <span className="w-2 h-2 rounded-full bg-[#e8621a] animate-pulse"></span>
                 <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Now Available</span>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl font-bold leading-tight mb-5">
+              <h2 className="text-3xl sm:text-4xl font-black text-gray-800 leading-tight mb-5">
                 Book Your <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Pandit</span><br />
                 From Your Phone
               </h2>
-              <p className="text-white/60 text-lg font-medium leading-relaxed mb-8 max-w-lg">
+              <p className="text-gray-500 text-lg font-medium leading-relaxed mb-8 max-w-lg">
                 Download the PanditJi app and book verified pandits for Havan, Vivah, Griha Pravesh and more — in under 60 seconds, anytime, anywhere.
               </p>
 
@@ -958,7 +872,7 @@ const Home = () => {
                   { icon: <Trophy size={14} />, label: "Verified Pandits" },
                   { icon: <TrendingUp size={14} />, label: "Use Code APP10" },
                 ].map((f) => (
-                  <span key={f.label} className="flex items-center gap-1.5 bg-white/8 border border-white/10 text-white/80 text-sm  px-4 py-2 rounded-full backdrop-blur-sm hover:border-[#e8621a]/40 hover:text-[#e8621a] transition-colors cursor-default">
+                  <span key={f.label} className="flex items-center gap-1.5 bg-white border border-gray-100 text-gray-600 text-sm font-bold px-4 py-2.5 rounded-xl shadow-sm hover:border-[#e8621a]/40 hover:text-[#e8621a] transition-all cursor-default">
                     <span className="text-[#e8621a]">{f.icon}</span>
                     {f.label}
                   </span>
@@ -966,29 +880,29 @@ const Home = () => {
               </div>
 
               {/* Offer Banner */}
-              <div className="bg-gradient-to-r from-[#e8621a]/20 to-[#f5a020]/20 border border-[#e8621a]/30 rounded-2xl px-5 py-4 flex items-center gap-4 mb-10 max-w-md">
-                <div className="w-10 h-10 shrink-0 bg-gradient-to-br from-[#e8621a] to-[#f5a020] rounded-xl flex items-center justify-center text-white">
+              <div className="bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-2xl px-5 py-4 flex items-center gap-4 mb-10 max-w-md shadow-sm">
+                <div className="w-10 h-10 shrink-0 bg-gradient-to-br from-[#e8621a] to-[#f5a020] rounded-xl flex items-center justify-center text-white shadow-md">
                   <BookOpen size={20} />
                 </div>
                 <div>
-                  <p className="text-white font-black text-sm flex items-center gap-2"><MessageSquare size={14} className="text-[#e8621a]" /> First Booking Offer!</p>
-                  <p className="text-white/60 text-xs font-medium mt-0.5">Get <span className="text-[#e8621a] font-black">10% OFF</span> your first puja booking on the app. Use code <span className="text-[#e8621a] font-black">APP10</span></p>
+                  <p className="text-gray-800 font-black text-sm flex items-center gap-2"><MessageSquare size={14} className="text-[#e8621a]" /> First Booking Offer!</p>
+                  <p className="text-gray-500 text-xs font-medium mt-0.5">Get <span className="text-[#e8621a] font-black">10% OFF</span> your first puja booking on the app. Use code <span className="text-[#e8621a] font-black">APP10</span></p>
                 </div>
               </div>
 
               {/* Store Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="group flex items-center gap-4 bg-white text-black px-6 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(255,255,255,0.15)] hover:-translate-y-1 transition-all duration-300">
-                  <svg viewBox="0 0 24 24" className="w-8 h-8 shrink-0 fill-black" xmlns="http://www.w3.org/2000/svg"><path d="M3.18 23.76c.33.18.7.24 1.06.18l11.84-12.07L12.94 8.8 3.18 23.76zM20.47 10.41l-2.56-1.47-3.29 3.29 3.29 3.35 2.58-1.48c.74-.42.74-1.27-.02-1.69zM1.57.48C1.26.83 1.08 1.37 1.08 2.07v19.86c0 .7.18 1.23.5 1.57l.08.08 11.12-11.12v-.26L1.65.4l-.08.08zM16.07 14.67 4.24 21.42l-.06.03 3.09-3.15 8.8-3.63z"/></svg>
+                <button className="group flex items-center gap-4 bg-gray-900 text-white px-6 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-1 transition-all duration-300">
+                  <FaGooglePlay className="w-8 h-8 shrink-0 text-white transition-transform group-hover:scale-110" />
                   <div className="text-left">
-                    <div className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">Get it on</div>
+                    <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Get it on</div>
                     <div className="text-base font-black leading-tight">Google Play</div>
                   </div>
                 </button>
-                <button className="group flex items-center gap-4 bg-white/10 border border-white/20 text-white px-6 py-4 rounded-2xl hover:bg-white/15 hover:-translate-y-1 transition-all duration-300 backdrop-blur-sm">
-                  <svg viewBox="0 0 24 24" className="w-8 h-8 shrink-0 fill-white" xmlns="http://www.w3.org/2000/svg"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.15-2.18 1.27-2.16 3.8.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.37 2.78M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                <button className="group flex items-center gap-4 bg-white border border-gray-200 text-gray-800 px-6 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300">
+                  <FaApple className="w-9 h-9 shrink-0 text-gray-800 transition-transform group-hover:scale-110" />
                   <div className="text-left">
-                    <div className="text-[10px] text-white/50 font-medium uppercase tracking-wider">Download on</div>
+                    <div className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Download on</div>
                     <div className="text-base font-black leading-tight">App Store</div>
                   </div>
                 </button>
@@ -998,14 +912,14 @@ const Home = () => {
               <div className="flex items-center gap-6 mt-8">
                 <div className="flex -space-x-2">
                   {["/images/pandit_intro_thumb.png","/images/pandit_intro_thumb.png","/images/pandit_intro_thumb.png","/images/pandit_intro_thumb.png"].map((src, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#0a0503] overflow-hidden">
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shadow-sm">
                       <img src={src} alt="user" className="w-full h-full object-cover" />
                     </div>
                   ))}
                 </div>
                 <div>
-                  <p className="text-white font-bold text-sm">1 Lakh+ Downloads</p>
-                  <p className="text-white/40 text-xs font-medium flex items-center gap-1"><Star size={11} className="text-[#e8621a] fill-[#e8621a]" /> 4.8 rating on both stores</p>
+                  <p className="text-gray-800 font-bold text-sm">1 Lakh+ Downloads</p>
+                  <p className="text-gray-400 text-xs font-medium flex items-center gap-1"><Star size={11} className="text-[#e8621a] fill-[#e8621a]" /> 4.8 rating on both stores</p>
                 </div>
               </div>
             </div>
@@ -1013,31 +927,31 @@ const Home = () => {
             {/* Right — Phone Mockup Glimpses */}
             <div className="flex-1 flex items-end justify-center gap-4 sm:gap-6 relative">
               {/* Glow behind phones */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#e8621a]/20 to-transparent rounded-3xl blur-2xl pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#e8621a]/15 to-transparent rounded-3xl blur-2xl pointer-events-none"></div>
 
               {/* Phone 1 — Home Screen */}
-              <div className="relative shrink-0 w-36 sm:w-44 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)] border-2 border-white/10 translate-y-8">
+              <div className="relative shrink-0 w-36 sm:w-44 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(232,98,26,0.15)] border-2 border-white translate-y-8">
                 <img src="/images/app_mockup_home.png" alt="App Home Screen" className="w-full h-full object-cover" />
-                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/60 to-transparent flex items-end px-3 pb-3">
+                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/40 to-transparent flex items-end px-3 pb-3">
                   <span className="text-white text-[10px] font-bold">Home Screen</span>
                 </div>
               </div>
 
               {/* Phone 2 — Booking (center, tallest) */}
-              <div className="relative shrink-0 w-40 sm:w-52 rounded-[2.5rem] overflow-hidden shadow-[0_40px_80px_rgba(242,141,88,0.3)] border-2 border-[#e8621a]/30 z-10">
+              <div className="relative shrink-0 w-40 sm:w-52 rounded-[2.5rem] overflow-hidden shadow-[0_40px_80px_rgba(242,141,88,0.2)] border-2 border-[#e8621a]/30 z-10">
                 <img src="/images/app_mockup_booking.png" alt="App Booking Screen" className="w-full h-full object-cover" />
                 <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-[#e8621a] text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest whitespace-nowrap shadow-lg">
                   Book in 60 sec
                 </div>
-                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/60 to-transparent flex items-end px-3 pb-3">
+                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/40 to-transparent flex items-end px-3 pb-3">
                   <span className="text-white text-[10px] font-bold">Pandit Profile</span>
                 </div>
               </div>
 
               {/* Phone 3 — Tracking */}
-              <div className="relative shrink-0 w-36 sm:w-44 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)] border-2 border-white/10 translate-y-8">
+              <div className="relative shrink-0 w-36 sm:w-44 rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(232,98,26,0.15)] border-2 border-white translate-y-8">
                 <img src="/images/app_mockup_tracking.png" alt="App Tracking Screen" className="w-full h-full object-cover" />
-                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/60 to-transparent flex items-end px-3 pb-3">
+                <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/40 to-transparent flex items-end px-3 pb-3">
                   <span className="text-white text-[10px] font-bold">Live Tracking</span>
                 </div>
               </div>
