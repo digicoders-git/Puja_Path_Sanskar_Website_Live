@@ -39,7 +39,7 @@ const Contact = () => {
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-3 py-1 mb-3">
                 <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Get in Touch</span>
               </div>
-              <h2 className="text-3xl font-black text-gray-800 mb-2 leading-tight">
+              <h2 className="text-3xl font-black text-[#b2371f] mb-2 leading-tight">
                 Let's <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Connect</span>
               </h2>
               <p className="text-sm text-gray-500 leading-relaxed font-medium">Have questions about booking a pandit or listing your services? Our team is available to assist you every day.</p>

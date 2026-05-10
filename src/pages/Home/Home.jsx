@@ -49,12 +49,57 @@ const testimonials = [
   { name: "Amit Verma", city: "Jaipur", rating: 4, text: "Found a great pandit for our Satyanarayan Katha within minutes. The platform is very easy to use.", puja: "Satyanarayan Puja" },
 ]
 
+// --- Dynamic Festival Dates System ---
+const FESTIVAL_DATES = {
+  "Ganesh Chaturthi": { 2025: "7 Sep 2025", 2026: "14 Sep 2026", 2027: "4 Sep 2027" },
+  "Navratri": { 2025: "22 Sep 2025", 2026: "11 Oct 2026", 2027: "30 Sep 2027" },
+  "Diwali Puja": { 2025: "20 Oct 2025", 2026: "8 Nov 2026", 2027: "29 Oct 2027" },
+  "Vivah Muhurat": { 2025: "Nov–Dec 2025", 2026: "Nov–Dec 2026", 2027: "Nov–Dec 2027" }
+};
+
+const getFestivalStatus = (dateStr) => {
+  if (dateStr.includes("–")) return "Season Open";
+  const target = new Date(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diff = target - today;
+  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  
+  if (days < 0) return "Completed";
+  if (days === 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  if (days <= 30) return `${days} Days Left`;
+  return "Coming Soon";
+};
+
+const getUpcomingDate = (name) => {
+  const year = new Date().getFullYear();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  let dateStr = FESTIVAL_DATES[name][year];
+  
+  // If date for current year passed, try next year
+  if (dateStr && !dateStr.includes("–") && new Date(dateStr) < today) {
+    dateStr = FESTIVAL_DATES[name][year + 1];
+  }
+  
+  return dateStr || FESTIVAL_DATES[name][2026];
+};
+
 const upcomingFestivals = [
-  { name: "Ganesh Chaturthi", date: "7 Sep 2025", days: "Coming Soon", img: "/images/festival_ganesha.png" },
-  { name: "Navratri", date: "22 Sep 2025", days: "Coming Soon", img: "/images/festival_navratri.png" },
-  { name: "Diwali Puja", date: "20 Oct 2025", days: "Coming Soon", img: "/images/festival_diwali.png" },
-  { name: "Vivah Muhurat", date: "Nov–Dec 2025", days: "Season Open", img: "/images/festival_vivah.png" },
-]
+  { name: "Ganesh Chaturthi", img: "/images/festival_ganesha.png" },
+  { name: "Navratri", img: "/images/festival_navratri.png" },
+  { name: "Diwali Puja", img: "/images/festival_diwali.png" },
+  { name: "Vivah Muhurat", img: "/images/festival_vivah.png" },
+].map(f => {
+  const date = getUpcomingDate(f.name);
+  return {
+    ...f,
+    date: date,
+    days: getFestivalStatus(date)
+  };
+});
 
 // const pujaPackages = [
 //   { name: "Basic Puja", price: "₹1,100", color: "border-gray-200", badge: "", features: ["1 Pandit", "Up to 2 hours", "Basic samagri list", "Aarti & prasad", "Certificate of puja"] },
@@ -170,7 +215,7 @@ const Home = () => {
           </div> */}
           
           {/* Main Heading */}
-          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-4 leading-[1.2] sm:leading-snug text-gray-800 drop-shadow-sm tracking-tight uppercase">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-4 leading-[1.2] sm:leading-snug text-[#b2371f] drop-shadow-sm tracking-tight uppercase">
             Har Puja Ke Liye <br className="sm:hidden" /> Sahi Pandit
           </h1>
           

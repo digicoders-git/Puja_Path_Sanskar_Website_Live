@@ -173,7 +173,7 @@ const Register = () => {
           >
              <div className="max-w-3xl mx-auto">
                 <span className="text-3xl mb-4 block group-hover:scale-110 transition-transform">🙏</span>
-                <h2 className="text-2xl md:text-3xl font-black text-gray-800 mb-4 leading-tight">
+                <h2 className="text-2xl md:text-3xl font-black text-[#b2371f] mb-4 leading-tight">
                   नमस्कार पंडित जी
                 </h2>
                 <p className="text-lg font-bold text-[#e8621a] mb-6">
@@ -222,7 +222,7 @@ const Register = () => {
             <span className="inline-flex items-center gap-2 bg-[#e8621a]/10 text-[#e8621a] text-xs font-black px-5 py-2 rounded-full mb-4 uppercase tracking-widest border border-[#e8621a]/20">
               <Sparkles size={14} /> Pandit Registration Form
             </span>
-            <h1 className="text-4xl sm:text-6xl font-black mb-6 text-gray-800 tracking-tight">Pandit <span className="text-[#e8621a]">Registration</span></h1>
+            <h1 className="text-4xl sm:text-6xl font-black mb-6 text-[#b2371f] tracking-tight">Pandit <span className="text-[#e8621a]">Registration</span></h1>
           </div>
 
           {renderStepIndicator()}

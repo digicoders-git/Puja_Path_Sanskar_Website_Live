@@ -346,7 +346,7 @@ const Pujas = () => {
             <Sparkles size={15} className="text-[#e8621a]" />
             <span className="text-[#e8621a] font-bold text-sm tracking-widest uppercase">Sacred Vedic Rituals</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-gray-800 mb-5 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#b2371f] mb-5 leading-tight">
             Explore All<br className="hidden sm:block" /> <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Puja Services</span>
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
