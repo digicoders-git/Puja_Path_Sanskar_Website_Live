@@ -1,29 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FiFilter, FiX, FiCheck } from "react-icons/fi"
-
-const cities = [
-  "All Cities",
-  "Varanasi", "Lucknow", "Prayagraj", "Agra", "Kanpur", "Mathura", "Vrindavan", "Ayodhya", "Meerut", "Noida", "Ghaziabad",
-  "Delhi", "New Delhi", "Gurugram", "Faridabad",
-  "Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad", "Thane", "Solapur",
-  "Jaipur", "Jodhpur", "Udaipur", "Ajmer", "Kota", "Bikaner", "Pushkar",
-  "Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar", "Dwarka",
-  "Bhopal", "Indore", "Ujjain", "Gwalior", "Jabalpur",
-  "Bangalore", "Mysore", "Hubli", "Mangalore",
-  "Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli",
-  "Kolkata", "Howrah", "Durgapur", "Siliguri",
-  "Patna", "Gaya", "Bodh Gaya", "Muzaffarpur",
-  "Haridwar", "Rishikesh", "Dehradun", "Nainital",
-  "Ranchi", "Jamshedpur", "Dhanbad",
-  "Amritsar", "Ludhiana", "Chandigarh", "Jalandhar",
-  "Ambala", "Hisar", "Rohtak", "Panipat",
-  "Hyderabad", "Visakhapatnam", "Vijayawada", "Tirupati",
-  "Kochi", "Thiruvananthapuram", "Kozhikode", "Thrissur",
-  "Bhubaneswar", "Puri", "Cuttack",
-  "Raipur", "Bilaspur",
-  "Guwahati", "Dibrugarh",
-  "Shimla", "Manali", "Dharamshala",
-]
+import { MapPin, X } from "lucide-react"
+import { useGooglePlacesAutocomplete } from "../../hooks/useGooglePlacesAutocomplete"
 
 const specializations = [
   "Vivah Expert",
@@ -34,35 +12,66 @@ const specializations = [
 ]
 
 const FilterSidebar = ({ onApply }) => {
-  const [city, setCity] = useState("All Cities")
+  const [city, setCity] = useState("")
   const [selectedSpecs, setSelectedSpecs] = useState([])
   const [experience, setExperience] = useState("")
+  const dropdownRef = useRef(null)
 
-  // Jab bhi koi filter change ho — turant onApply call karo
+  const { inputRef, place, suggestions, showDropdown, handleInput, selectSuggestion, clearPlace, closeDropdown } = useGooglePlacesAutocomplete()
+
   useEffect(() => {
-    if (onApply) {
-      onApply({ city, specializations: selectedSpecs, experience })
+    if (place.address) {
+      setCity(place.address)
+      if (onApply) {
+        onApply({ city: place.address, specializations: selectedSpecs, experience })
+      }
     }
-  }, [city, selectedSpecs, experience])
+  }, [place, selectedSpecs, experience, onApply])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown()
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [closeDropdown])
+
+  const handleClearCity = () => {
+    setCity("")
+    clearPlace()
+    if (onApply) {
+      onApply({ city: "All Cities", specializations: selectedSpecs, experience })
+    }
+  }
 
   const toggleSpec = (s) => {
-    setSelectedSpecs(prev =>
-      prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]
-    )
+    const updated = selectedSpecs.includes(s) ? selectedSpecs.filter(x => x !== s) : [...selectedSpecs, s]
+    setSelectedSpecs(updated)
+    if (onApply) {
+      onApply({ city: city || "All Cities", specializations: updated, experience })
+    }
   }
 
   const handleExperience = (val) => {
-    // Same value dobara click karo toh deselect ho jaye
-    setExperience(prev => prev === val ? "" : val)
+    const updated = experience === val ? "" : val
+    setExperience(updated)
+    if (onApply) {
+      onApply({ city: city || "All Cities", specializations: selectedSpecs, experience: updated })
+    }
   }
 
   const handleReset = () => {
-    setCity("All Cities")
+    handleClearCity()
     setSelectedSpecs([])
     setExperience("")
+    if (onApply) {
+      onApply({ city: "All Cities", specializations: [], experience: "" })
+    }
   }
 
-  const hasFilters = city !== "All Cities" || selectedSpecs.length > 0 || experience
+  const hasFilters = city || selectedSpecs.length > 0 || experience
 
   return (
     <aside className="bg-[#fffaf4] rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 p-5 sm:p-6 sticky top-24">
@@ -77,24 +86,62 @@ const FilterSidebar = ({ onApply }) => {
         )}
       </div>
 
-      {/* Active filter count */}
       {hasFilters && (
         <div className="mb-5 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-xl px-4 py-2 text-xs text-[#e8621a] font-bold flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-[#e8621a] animate-pulse"></div>
-          {[city !== "All Cities", selectedSpecs.length > 0, !!experience].filter(Boolean).length} filter(s) active
+          {[!!city, selectedSpecs.length > 0, !!experience].filter(Boolean).length} filter(s) active
         </div>
       )}
 
-      {/* Location */}
+      {/* Location — Google Places */}
       <div className="mb-6">
         <h3 className="font-bold text-gray-800 text-sm mb-3">Location</h3>
-        <select
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 font-medium outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/20 transition-all cursor-pointer"
-        >
-          {cities.map((c) => <option key={c}>{c}</option>)}
-        </select>
+        <div className="relative" ref={dropdownRef}>
+          <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#e8621a] pointer-events-none z-10" />
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Search city..."
+            onChange={(e) => handleInput(e.target.value)}
+            className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-9 py-2.5 text-sm text-gray-700 font-medium outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/20 transition-all placeholder-gray-400"
+          />
+          {city && (
+            <button type="button" onClick={handleClearCity} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#e8621a] transition-colors">
+              <X size={14} />
+            </button>
+          )}
+          
+          {/* Google Places Suggestions Dropdown */}
+          {showDropdown && suggestions.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-64 overflow-y-auto">
+              {suggestions.map((suggestion, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    selectSuggestion(suggestion)
+                    setCity(suggestion.main)
+                    if (onApply) {
+                      onApply({ city: suggestion.main, specializations: selectedSpecs, experience })
+                    }
+                  }}
+                  className="w-full text-left px-4 py-3 hover:bg-[#e8621a]/5 border-b border-gray-100 last:border-b-0 transition-colors flex items-start gap-2"
+                >
+                  <MapPin size={14} className="text-[#e8621a] mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{suggestion.main}</p>
+                    {suggestion.secondary && <p className="text-xs text-gray-500">{suggestion.secondary}</p>}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        {city && (
+          <p className="mt-1.5 text-xs text-[#e8621a] font-bold flex items-center gap-1">
+            <MapPin size={11} /> {city}
+          </p>
+        )}
       </div>
 
       {/* Specialization */}
@@ -104,12 +151,7 @@ const FilterSidebar = ({ onApply }) => {
           {specializations.map(s => (
             <label key={s} className="flex items-center gap-3 cursor-pointer group">
               <div className="relative flex items-center justify-center shrink-0">
-                <input
-                  type="checkbox"
-                  className="peer sr-only"
-                  checked={selectedSpecs.includes(s)}
-                  onChange={() => toggleSpec(s)}
-                />
+                <input type="checkbox" className="peer sr-only" checked={selectedSpecs.includes(s)} onChange={() => toggleSpec(s)} />
                 <div className="w-5 h-5 rounded border-2 border-gray-300 peer-checked:bg-[#e8621a] peer-checked:border-[#e8621a] transition-all flex items-center justify-center group-hover:border-[#e8621a]/50">
                   <FiCheck size={14} className="text-white opacity-0 peer-checked:opacity-100 scale-50 peer-checked:scale-100 transition-all duration-300" />
                 </div>
@@ -127,13 +169,7 @@ const FilterSidebar = ({ onApply }) => {
           {["0-5 years", "5-10 years", "10+ years"].map(e => (
             <label key={e} className="flex items-center gap-3 cursor-pointer group">
               <div className="relative flex items-center justify-center shrink-0">
-                <input
-                  type="radio"
-                  name="exp"
-                  className="peer sr-only"
-                  checked={experience === e}
-                  onChange={() => handleExperience(e)}
-                />
+                <input type="radio" name="exp" className="peer sr-only" checked={experience === e} onChange={() => handleExperience(e)} />
                 <div className="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:border-[#e8621a] transition-colors flex items-center justify-center group-hover:border-[#e8621a]/50">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#e8621a] scale-0 peer-checked:scale-100 transition-transform duration-300"></div>
                 </div>
