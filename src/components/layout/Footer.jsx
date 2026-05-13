@@ -3,8 +3,10 @@ import { FiMail, FiPhone, FiClock, FiMapPin, FiArrowRight } from "react-icons/fi
 import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp, FaGooglePlay, FaApple } from "react-icons/fa"
 import { Heart } from "lucide-react"
 import logoImg from "../../assets/img.jpeg"
+import { useTranslation } from "react-i18next"
 
 const Footer = () => {
+  const { t } = useTranslation()
   return (
     <footer className="relative bg-[#fffcf9] text-gray-800 overflow-hidden border-t border-orange-100">
 
@@ -35,7 +37,7 @@ const Footer = () => {
           </div>
 
           <p className="text-gray-500 text-sm leading-relaxed font-medium">
-            India's most trusted platform to find verified pandits for all religious ceremonies, pujas and sacred rituals.
+            {t("footer.tagline")}
           </p>
 
           {/* Social Icons */}
@@ -58,7 +60,7 @@ const Footer = () => {
 
           {/* App Download Buttons */}
           <div className="mt-5 flex flex-col gap-3">
-            <p className="text-gray-400 font-black text-[10px] uppercase tracking-widest mb-[-4px]">Download App</p>
+            <p className="text-gray-400 font-black text-[10px] uppercase tracking-widest mb-[-4px]">{t("footer.download_app")}</p>
             <div className="flex gap-3">
               <a href="#" className="flex-1 flex items-center justify-center gap-2 bg-white border border-gray-100 hover:bg-[#e8621a] hover:border-[#e8621a] transition-all duration-300 rounded-xl py-2 px-3 group shadow-sm">
                 <FaGooglePlay className="text-gray-400 text-lg group-hover:text-white transition-colors" />
@@ -82,7 +84,7 @@ const Footer = () => {
         <div>
           <h3 className="text-gray-800 font-black mb-5 text-sm uppercase tracking-widest flex items-center gap-2">
             <span className="w-5 h-0.5 bg-gradient-to-r from-[#e8621a] to-[#f5a020] rounded-full"></span>
-            Popular Pujas
+            {t("footer.popular_pujas")}
           </h3>
           <ul className="space-y-3">
             {["Satyanarayan Puja", "Griha Pravesh", "Ganesh Puja", "Navratri Puja", "Vivah Puja", "Havan / Yagya"].map(p => (
@@ -103,7 +105,7 @@ const Footer = () => {
         <div>
           <h3 className="text-gray-800 font-black mb-5 text-sm uppercase tracking-widest flex items-center gap-2">
             <span className="w-5 h-0.5 bg-gradient-to-r from-[#e8621a] to-[#f5a020] rounded-full"></span>
-            Quick Links
+            {t("footer.quick_links")}
           </h3>
           <ul className="space-y-3">
             {[
@@ -130,13 +132,13 @@ const Footer = () => {
         <div>
           <h3 className="text-gray-800 font-black mb-5 text-sm uppercase tracking-widest flex items-center gap-2">
             <span className="w-5 h-0.5 bg-gradient-to-r from-[#e8621a] to-[#f5a020] rounded-full"></span>
-            Contact Us
+            {t("footer.contact_us")}
           </h3>
           <ul className="space-y-4">
             {[
               { icon: <FiMail size={15} />, text: "support@pujapathsanskar.com" },
               { icon: <FiPhone size={15} />, text: "+91 8433344459" },
-              { icon: <FiClock size={15} />, text: "Support connect 24*7" },
+              { icon: <FiClock size={15} />, text: t("footer.support_connect") },
               { icon: <FiMapPin size={15} />, text: "Gomti Nagar Extension Lucknow 226028" },
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-3 group cursor-default">
@@ -154,15 +156,15 @@ const Footer = () => {
       <div className="relative border-t border-gray-100 bg-gray-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-5 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-3 text-center sm:text-left">
           <span className="text-gray-400 text-[11px] sm:text-xs font-medium leading-relaxed">
-            © {new Date().getFullYear()} <span className="text-[#e8621a] font-bold">PujaPath Sanskar</span> — All Rights Reserved.
+            © {new Date().getFullYear()} <span className="text-[#e8621a] font-bold">PujaPath Sanskar</span> — {t("footer.rights_reserved")}
             <span className="flex sm:inline-flex items-center justify-center sm:justify-start gap-1 mt-1 sm:mt-0 sm:ml-1">
-              Created with <Heart size={12} fill="#e8621a" className="text-[#e8621a]" /> by <a href="https://www.digicoders.in" target="_blank" rel="noopener noreferrer" className="text-[#e8621a] hover:text-gray-800 transition-colors duration-200 font-bold">Team Digicoders</a>
+              {t("footer.created_with")} <Heart size={12} fill="#e8621a" className="text-[#e8621a]" /> {t("footer.by")} <a href="https://www.digicoders.in" target="_blank" rel="noopener noreferrer" className="text-[#e8621a] hover:text-gray-800 transition-colors duration-200 font-bold">Team Digicoders</a>
             </span>
           </span>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <Link to="/privacy" className="text-gray-400 hover:text-[#e8621a] text-[11px] sm:text-xs font-medium transition-colors duration-200">Privacy Policy</Link>
-            <Link to="/terms" className="text-gray-400 hover:text-[#e8621a] text-[11px] sm:text-xs font-medium transition-colors duration-200">Terms of Service</Link>
-            <Link to="/refund" className="text-gray-400 hover:text-[#e8621a] text-[11px] sm:text-xs font-medium transition-colors duration-200">Refund Policy</Link>
+            <Link to="/privacy" className="text-gray-400 hover:text-[#e8621a] text-[11px] sm:text-xs font-medium transition-colors duration-200">{t("footer.privacy_policy")}</Link>
+            <Link to="/terms" className="text-gray-400 hover:text-[#e8621a] text-[11px] sm:text-xs font-medium transition-colors duration-200">{t("footer.terms_of_service")}</Link>
+            <Link to="/refund" className="text-gray-400 hover:text-[#e8621a] text-[11px] sm:text-xs font-medium transition-colors duration-200">{t("footer.refund_policy")}</Link>
           </div>
         </div>
       </div>

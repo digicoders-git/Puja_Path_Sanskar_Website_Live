@@ -4,6 +4,8 @@ import { FiMenu, FiX, FiUserPlus, FiHome, FiUsers, FiBook, FiPhone, FiArrowRight
 import { MapPin, Search, ChevronDown } from "lucide-react"
 import { cities } from "../../data/cities"
 import { useLogin } from "../../context/LoginContext"
+import { useTranslation } from "react-i18next"
+import LanguageSwitcher from "../ui/LanguageSwitcher"
 
 import logoImg from "../../assets/img.jpeg"
 
@@ -20,6 +22,7 @@ const Navbar = ({ navRef }) => {
   const location = useLocation()
   const navigate = useNavigate()
   const dropdownRef = useRef(null)
+  const { t } = useTranslation()
 
   const [searchQuery, setSearchQuery] = useState("")
   const [searchCity, setSearchCity] = useState("All Cities")
@@ -58,10 +61,10 @@ const Navbar = ({ navRef }) => {
   const isActive = (path) => location.pathname === path
 
   const navLinks = [
-    { to: "/", label: "Home", icon: <FiHome size={18} /> },
-    { to: "/pandits", label: "Pandits", icon: <FiUsers size={18} /> },
-    { to: "/pujas", label: "Pujas", icon: <FiBook size={18} /> },
-    { to: "/contact", label: "Contact", icon: <FiPhone size={18} /> },
+    { to: "/", label: t("navbar.home"), icon: <FiHome size={18} /> },
+    { to: "/pandits", label: t("navbar.pandits"), icon: <FiUsers size={18} /> },
+    { to: "/pujas", label: t("navbar.pujas"), icon: <FiBook size={18} /> },
+    { to: "/contact", label: t("navbar.contact"), icon: <FiPhone size={18} /> },
   ]
 
   const isTransparentPage = ["/", "/pandits", "/pujas", "/contact", "/register", "/privacy", "/terms", "/refund"].includes(location.pathname)
@@ -90,12 +93,12 @@ const Navbar = ({ navRef }) => {
         >
           <span className="text-base">🔮</span>
           <p className="text-[11px] sm:text-xs text-gray-600 font-medium">
-            <span className="font-bold text-[#e8621a]">Need Astrology Consultation?</span>
-            <span className="hidden sm:inline text-gray-500"> — Kundli, Vastu & Jyotish guidance by </span>
+            <span className="font-bold text-[#e8621a]">{t("navbar.astrology_need")}</span>
+            <span className="hidden sm:inline text-gray-500">{t("navbar.astrology_desc")}</span>
             <span className="font-black text-gray-800">Astro Kanishk</span>
           </p>
           <span className="flex items-center gap-1 text-[10px] sm:text-[11px] font-black text-[#e8621a] bg-[#e8621a]/10 border border-[#e8621a]/20 px-2.5 py-0.5 rounded-full group-hover:bg-[#e8621a] group-hover:text-white transition-all duration-300 whitespace-nowrap">
-            Visit Now →
+            {t("navbar.visit_now")}
           </span>
         </a>
       </div>
@@ -117,36 +120,37 @@ const Navbar = ({ navRef }) => {
           </Link>
 
           {/* Search Bar (Desktop) */}
-          <div className="hidden lg:flex items-center flex-1 max-w-md mx-4 h-11 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden group focus-within:ring-2 focus-within:ring-[#e8621a]/20 focus-within:border-[#e8621a] transition-all">
+          <div className="hidden lg:flex items-center flex-1 max-w-md mx-4 h-11 bg-white border border-gray-200 rounded-xl shadow-sm group focus-within:ring-2 focus-within:ring-[#e8621a]/20 focus-within:border-[#e8621a] transition-all">
             {/* City Select */}
             <div className="relative h-full" ref={dropdownRef}>
               <button 
                 type="button"
-                onClick={() => setShowCityDropdown(!showCityDropdown)}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowCityDropdown(!showCityDropdown); }}
                 className="h-full flex items-center gap-1.5 px-3 border-r border-gray-100 hover:bg-gray-50 transition-colors text-gray-600"
               >
                 <MapPin size={16} className="text-[#e8621a]" />
                 <span className="text-xs font-bold whitespace-nowrap overflow-hidden max-w-[80px] text-ellipsis">
-                  {searchCity === "All Cities" ? "City" : searchCity}
+                  {searchCity === "All Cities" ? t("navbar.city") : t(`cities.${searchCity.toLowerCase()}`, { defaultValue: searchCity })}
                 </span>
                 <ChevronDown size={12} className={`transition-transform duration-200 ${showCityDropdown ? 'rotate-180' : ''}`} />
               </button>
 
               {showCityDropdown && (
-                <div className="absolute top-full left-0 w-48 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 py-2 max-h-60 overflow-y-auto z-[60] animate-in fade-in zoom-in-95 duration-200">
+                <div className="absolute top-full left-0 min-w-[260px] w-max mt-2 bg-white rounded-xl shadow-2xl border border-orange-100 py-2 max-h-80 overflow-y-auto overflow-x-hidden z-[999] animate-in fade-in zoom-in-95 duration-200">
                   <div 
-                    className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-xs font-bold text-gray-600 hover:text-[#e8621a]"
-                    onClick={() => { setSearchCity("All Cities"); setShowCityDropdown(false) }}
+                    className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer text-xs font-bold text-gray-600 hover:text-[#e8621a] transition-colors"
+                    onClick={(e) => { e.stopPropagation(); setSearchCity("All Cities"); setShowCityDropdown(false) }}
                   >
-                    All Cities
+                    {t("navbar.all_cities")}
                   </div>
                   {cities.map(city => (
                     <div 
                       key={city}
-                      className="px-4 py-2 hover:bg-orange-50 cursor-pointer text-xs font-bold text-gray-600 hover:text-[#e8621a] flex items-center gap-2"
-                      onClick={() => { setSearchCity(city); setShowCityDropdown(false) }}
+                      className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer text-xs font-bold text-gray-600 hover:text-[#e8621a] flex items-center gap-2 transition-colors"
+                      onClick={(e) => { e.stopPropagation(); setSearchCity(city); setShowCityDropdown(false) }}
                     >
-                      <MapPin size={10} className="text-[#e8621a]" /> {city}
+                      <MapPin size={12} className="text-[#e8621a] shrink-0" /> 
+                      <span className="whitespace-nowrap">{t(`cities.${city.toLowerCase()}`, { defaultValue: city })}</span>
                     </div>
                   ))}
                 </div>
@@ -157,7 +161,7 @@ const Navbar = ({ navRef }) => {
             <form onSubmit={handleSearch} className="flex-1 flex items-center h-full">
               <input 
                 type="text"
-                placeholder="Search Pandit or Puja..."
+                placeholder={t("navbar.search_placeholder")}
                 className="w-full h-full bg-transparent outline-none px-3 text-xs font-medium text-gray-700 placeholder-gray-400"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -177,7 +181,7 @@ const Navbar = ({ navRef }) => {
             ))}
             <div className={`w-0.5 h-6 shrink-0 rounded-full ${scrolled ? 'bg-primary/20' : 'bg-light/30'}`} />
             <Link to="/register" className={`${btnClass} flex items-center gap-2 px-6 py-2.5 rounded-full font-extrasemibold transition-all text-sm whitespace-nowrap shrink-0 transform hover:-translate-y-0.5 uppercase tracking-wide shadow-lg`}>
-              <FiUserPlus size={18} /> REGISTER NOW
+              <FiUserPlus size={18} /> {t("navbar.register")}
             </Link>
           </div>
 
@@ -202,8 +206,8 @@ const Navbar = ({ navRef }) => {
                      value={searchCity}
                      onChange={(e) => setSearchCity(e.target.value)}
                    >
-                     <option value="All Cities">All Cities</option>
-                     {cities.map(c => <option key={c} value={c}>{c}</option>)}
+                     <option value="All Cities">{t("navbar.all_cities")}</option>
+                     {cities.map(c => <option key={c} value={c}>{t(`cities.${c.toLowerCase()}`, { defaultValue: c })}</option>)}
                    </select>
                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                      <ChevronDown size={14} />
@@ -213,7 +217,7 @@ const Navbar = ({ navRef }) => {
               <div className="relative h-11">
                 <input 
                   type="text"
-                  placeholder="Search Pandit or Puja..."
+                  placeholder={t("navbar.search_placeholder")}
                   className="w-full h-full bg-gray-50 border border-gray-100 rounded-xl pl-10 pr-4 text-xs font-medium text-gray-700 outline-none"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -239,7 +243,7 @@ const Navbar = ({ navRef }) => {
               onClick={() => setMenuOpen(false)} 
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white px-4 py-3.5 mt-2 rounded-xl font-black shadow-md shadow-[#e8621a]/20 transition-all uppercase tracking-wider text-sm hover:-translate-y-0.5"
             >
-              <FiUserPlus size={16} /> Register Now
+              <FiUserPlus size={16} /> {t("navbar.register")}
             </Link>
           </div>
         )}

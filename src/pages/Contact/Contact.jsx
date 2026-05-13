@@ -2,13 +2,15 @@ import { useState } from "react"
 import api from "../../api/axiosInstance"
 import { FiPhone, FiMail, FiMapPin, FiClock, FiSend, FiHelpCircle } from "react-icons/fi"
 import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp, FaCheckCircle } from "react-icons/fa"
-import { MapPin, Phone, Mail, Clock, MessageSquare, Users, ShieldCheck, Star, Building2, Landmark, Building, HeartHandshake } from "lucide-react"
+import { MessageSquare, Users, ShieldCheck, Star } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const Contact = () => {
   const [form, setForm] = useState({ fullName: "", email: "", phone: "", subject: "", message: "" })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const { t } = useTranslation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -21,7 +23,7 @@ const Contact = () => {
       setForm({ fullName: "", email: "", phone: "", subject: "", message: "" })
       setTimeout(() => setSent(false), 4000)
     } catch (err) {
-      setError(err.response?.data?.message || err.message || "Something went wrong")
+      setError(err.response?.data?.message || err.message || t("interest_modal.error_general"))
     } finally {
       setLoading(false)
     }
@@ -37,20 +39,20 @@ const Contact = () => {
           <div className="flex flex-col gap-6">
             <div>
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-3 py-1 mb-3">
-                <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Get in Touch</span>
+                <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("contact.get_in_touch")}</span>
               </div>
               <h2 className="text-3xl font-black text-[#b2371f] mb-2 leading-tight">
-                Let's <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Connect</span>
+                {t("contact.lets_connect")}
               </h2>
-              <p className="text-sm text-gray-500 leading-relaxed font-medium">Have questions about booking a pandit or listing your services? Our team is available to assist you every day.</p>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">{t("contact.hero_desc")}</p>
             </div>
 
             <div className="flex flex-col gap-4">
               {[
-                { icon: <FiPhone size={22} />, title: "Phone", lines: ["+91 8433344459"] },
-                { icon: <FiMail size={22} />, title: "Email", lines: ["support@pujapathsanskar.com"] },
-                { icon: <FiMapPin size={22} />, title: "Address", lines: ["Gomti Nagar Extension Lucknow 226028"] },
-                { icon: <FiClock size={22} />, title: "Support connect", lines: ["24*7"] },
+                { icon: <FiPhone size={22} />, title: t("contact.phone"), lines: ["+91 8433344459"] },
+                { icon: <FiMail size={22} />, title: t("contact.email"), lines: ["support@pujapathsanskar.com"] },
+                { icon: <FiMapPin size={22} />, title: t("contact.address"), lines: ["Gomti Nagar Extension Lucknow 226028"] },
+                { icon: <FiClock size={22} />, title: t("contact.support_connect"), lines: ["24*7"] },
               ].map((item) => (
                 <div key={item.title} className="group flex items-start gap-4 p-4 rounded-2xl bg-white border border-gray-100 hover:shadow-[0_8px_25px_rgba(242,141,88,0.1)] hover:border-[#e8621a]/20 transition-all duration-300">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/15 flex items-center justify-center text-[#e8621a] shrink-0 group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(242,141,88,0.2)] transition-all duration-300">
@@ -66,7 +68,7 @@ const Contact = () => {
 
             {/* Social */}
             <div className="bg-[#fffaf4] rounded-2xl p-5 border border-gray-100 shadow-sm mt-2">
-              <p className="font-black text-gray-800 text-sm mb-4">Follow Our Spiritual Journey</p>
+              <p className="font-black text-gray-800 text-sm mb-4">{t("contact.follow_journey")}</p>
               <div className="flex gap-3">
                 {[
                   { label: "Facebook", color: "bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white", icon: <FaFacebookF size={16} /> },
@@ -87,48 +89,48 @@ const Contact = () => {
             {/* Top gradient bar */}
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#e8621a] to-[#f5a020]"></div>
 
-            <h2 className="text-2xl font-black text-gray-800 mb-1">Send us a Message</h2>
-            <p className="text-sm text-gray-400 mb-8 font-medium">We'll get back to you within 24 hours</p>
+            <h2 className="text-2xl font-black text-gray-800 mb-1">{t("contact.send_message")}</h2>
+            <p className="text-sm text-gray-400 mb-8 font-medium">{t("contact.back_within_24")}</p>
 
             {sent ? (
               <div className="text-center py-16 flex flex-col items-center justify-center h-full">
                 <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg shadow-green-400/30">
                   <FaCheckCircle className="text-white" size={40} />
                 </div>
-                <h3 className="font-black text-2xl text-gray-800 mb-2">Message Sent Successfully!</h3>
-                <p className="text-gray-500 font-medium">Our team will contact you shortly.</p>
+                <h3 className="font-black text-2xl text-gray-800 mb-2">{t("contact.sent_success")}</h3>
+                <p className="text-gray-500 font-medium">{t("contact.team_contact_shortly")}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-5 flex-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="group">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Full Name *</label>
-                    <input required type="text" placeholder="Your full name" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400" />
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("contact.full_name_label")}</label>
+                    <input required type="text" placeholder={t("contact.full_name_placeholder")} value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400" />
                   </div>
                   <div className="group">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Phone Number</label>
-                    <input type="tel" placeholder="+91 XXXXX XXXXX" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400" />
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("contact.phone_label")}</label>
+                    <input type="tel" placeholder={t("contact.phone_placeholder")} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400" />
                   </div>
                 </div>
                 <div className="group">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Email Address *</label>
-                  <input required type="email" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400" />
+                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("contact.email_label")}</label>
+                  <input required type="email" placeholder={t("contact.email_placeholder")} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400" />
                 </div>
                 <div className="group">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Subject *</label>
+                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("contact.subject_label")}</label>
                   <select required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-600 cursor-pointer appearance-none">
-                    <option value="" disabled className="text-gray-400">Select a subject</option>
-                    <option>Book a Pandit</option>
-                    <option>Register as Pandit</option>
-                    <option>Puja Enquiry</option>
-                    <option>Payment Issue</option>
-                    <option>Feedback / Complaint</option>
-                    <option>Other</option>
+                    <option value="" disabled className="text-gray-400">{t("contact.select_subject")}</option>
+                    <option value="Book a Pandit">{t("contact.subject_book")}</option>
+                    <option value="Register as Pandit">{t("contact.subject_register")}</option>
+                    <option value="Puja Enquiry">{t("contact.subject_enquiry")}</option>
+                    <option value="Payment Issue">{t("contact.subject_payment")}</option>
+                    <option value="Feedback / Complaint">{t("contact.subject_feedback")}</option>
+                    <option value="Other">{t("contact.subject_other")}</option>
                   </select>
                 </div>
                 <div className="group flex-1 flex flex-col">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Message *</label>
-                  <textarea required placeholder="Write your message here..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5} className="w-full flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400 resize-none" />
+                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("contact.message_label")}</label>
+                  <textarea required placeholder={t("contact.message_placeholder")} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5} className="w-full flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400 resize-none" />
                 </div>
                 {error && (
                   <p className="text-red-500 text-xs font-bold text-center bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">
@@ -137,9 +139,9 @@ const Contact = () => {
                 )}
                 <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-[#e8621a] to-[#f5a020] hover:shadow-[0_8px_20px_rgba(242,141,88,0.3)] hover:-translate-y-0.5 text-white py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 mt-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                   {loading ? (
-                    <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span> Sending...</>
+                    <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span> {t("contact.sending")}</>
                   ) : (
-                    <><FiSend size={16} /> Send Message</>
+                    <><FiSend size={16} /> {t("contact.send_message")}</>
                   )}
                 </button>
               </form>
@@ -158,19 +160,19 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-5 py-2 mb-4">
-              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">Assistance</span>
+              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">{t("contact.assistance")}</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-gray-800">
-              How Can We <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Help You?</span>
+              {t("contact.how_can_we_help")}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: <ShieldCheck size={32} />, title: "Book a Pandit", desc: "Need help finding the right pandit for your ceremony? We'll guide you." },
-              { icon: <Users size={32} />, title: "Register as Pandit", desc: "Want to list your services? We'll help you get started quickly." },
-              { icon: <MessageSquare size={32} />, title: "Puja Enquiry", desc: "Have questions about a specific puja or ritual? Ask our experts." },
-              { icon: <Star size={32} />, title: "Feedback", desc: "Share your experience or suggestions to help us improve our services." },
+              { icon: <ShieldCheck size={32} />, title: t("navbar.find_pandit"), desc: "Need help finding the right pandit for your ceremony? We'll guide you." },
+              { icon: <Users size={32} />, title: t("pandits.register_as_pandit"), desc: "Want to list your services? We'll help you get started quickly." },
+              { icon: <MessageSquare size={32} />, title: t("interest_modal.puja_enquiry"), desc: "Have questions about a specific puja or ritual? Ask our experts." },
+              { icon: <Star size={32} />, title: t("contact.subject_feedback"), desc: "Share your experience or suggestions to help us improve our services." },
             ].map((item, idx) => (
               <div key={item.title} className="group bg-[#fffaf4] rounded-3xl border border-gray-100 shadow-sm hover:shadow-[0_20px_50px_rgba(242,141,88,0.1)] hover:border-[#e8621a]/20 transition-all duration-500 p-8 text-center overflow-hidden flex flex-col items-center">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/15 flex items-center justify-center text-[#e8621a] mb-6 group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(242,141,88,0.2)] transition-all duration-500">
@@ -190,7 +192,7 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-gray-800">
-              Frequently Asked <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Questions</span>
+              {t("contact.faq_title")}
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -254,17 +256,17 @@ const Contact = () => {
 
         <div className="max-w-3xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
-            Still Have <span className="text-white/90 underline decoration-white/40 decoration-wavy underline-offset-4">Questions?</span>
+            {t("contact.still_have_questions")}
           </h2>
           <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto font-medium leading-relaxed">
-            Our support team is available Monday to Saturday, 9 AM to 7 PM. We're happy to help!
+            {t("contact.support_hours")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:+919876543210" className="bg-white text-[#e8621a] font-black px-10 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <FiPhone size={18} /> Call Us Now
+            <a href="tel:+918433344459" className="bg-white text-[#e8621a] font-black px-10 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+              <FiPhone size={18} /> {t("contact.call_now")}
             </a>
-            <a href="mailto:support@panditji.in" className="bg-white/15 backdrop-blur-sm border-2 border-white/40 text-white font-black px-10 py-4 rounded-2xl hover:bg-white/25 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <FiMail size={18} /> Email Us
+            <a href="mailto:support@pujapathsanskar.com" className="bg-white/15 backdrop-blur-sm border-2 border-white/40 text-white font-black px-10 py-4 rounded-2xl hover:bg-white/25 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+              <FiMail size={18} /> {t("contact.email_us")}
             </a>
           </div>
         </div>

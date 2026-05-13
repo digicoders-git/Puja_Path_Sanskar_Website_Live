@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { FiMapPin, FiPlay, FiVideo } from "react-icons/fi"
+import { useTranslation } from "react-i18next"
 import { FaStar, FaGraduationCap } from "react-icons/fa"
 import AppDownloadModal from "./AppDownloadModal"
 import VideoModal from "./VideoModal"
@@ -9,6 +10,7 @@ const BACKEND_URL = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
 const PanditCard = ({ pandit }) => {
   const [showBooking, setShowBooking] = useState(false)
   const [showVideo, setShowVideo] = useState(false)
+  const { t } = useTranslation()
 
   // API fields mapping
   const name        = pandit.fullName || "Pandit Ji"
@@ -18,7 +20,7 @@ const PanditCard = ({ pandit }) => {
   
   const available   = pandit.isActive !== false
   const about       = pandit.experience
-    ? `Experienced Pandit with ${pandit.experience} of practice. Specializes in ${specialization}.`
+    ? t("pandits.about_desc", { exp: pandit.experience, spec: specialization, defaultValue: `Experienced Pandit with ${pandit.experience} of practice. Specializes in ${specialization}.` })
     : ""
 
   const profilePhotoUrl = pandit.profilePhoto
@@ -63,9 +65,9 @@ const PanditCard = ({ pandit }) => {
             <div className="flex justify-between items-start gap-2">
               <h3 className="font-bold text-gray-800 text-lg truncate group-hover:text-[#e8621a] transition-colors">{name}</h3>
               {available ? (
-                <span className="text-[10px] uppercase tracking-wider bg-[#e8621a]/10 text-[#e8621a] px-2.5 py-1 rounded-full font-bold shrink-0 shadow-sm">Available</span>
+                <span className="text-[10px] uppercase tracking-wider bg-[#e8621a]/10 text-[#e8621a] px-2.5 py-1 rounded-full font-bold shrink-0 shadow-sm">{t("common.available", { defaultValue: "Available" })}</span>
               ) : (
-                <span className="text-[10px] uppercase tracking-wider bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full font-bold shrink-0">Busy</span>
+                <span className="text-[10px] uppercase tracking-wider bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full font-bold shrink-0">{t("common.busy", { defaultValue: "Busy" })}</span>
               )}
             </div>
             <p className="text-[#f5a020] text-sm font-semibold truncate mt-0.5">{specialization}</p>
@@ -78,11 +80,11 @@ const PanditCard = ({ pandit }) => {
         {/* Stats row */}
         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 bg-gray-50/80 p-3 rounded-xl border border-gray-100/50">
           <span className="flex items-center gap-1.5 font-semibold text-gray-700">
-            <FaStar size={14} className="text-[#e8621a]" /> Expert
+            <FaStar size={14} className="text-[#e8621a]" /> {t("common.expert", { defaultValue: "Expert" })}
           </span>
           <span className="text-gray-300">|</span>
           <span className="flex items-center gap-1.5 font-medium">
-            <FaGraduationCap size={14} className="text-[#f5a020]" /> {experience} exp.
+            <FaGraduationCap size={14} className="text-[#f5a020]" /> {experience} {t("common.exp", { defaultValue: "exp." })}
           </span>
           {pandit.timeDiscipline && (
             <>
@@ -99,7 +101,7 @@ const PanditCard = ({ pandit }) => {
         {pandit.selectedPujas?.length > 0 && (
           <div className="mt-1">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-              <div className="w-1 h-1 rounded-full bg-[#e8621a]" /> Pujas Performed
+              <div className="w-1 h-1 rounded-full bg-[#e8621a]" /> {t("pandits.pujas_performed", { defaultValue: "Pujas Performed" })}
             </p>
             <div className="flex flex-wrap gap-1.5">
               {pandit.selectedPujas.map((sp, idx) => (
@@ -123,7 +125,7 @@ const PanditCard = ({ pandit }) => {
               onClick={() => setShowVideo(true)}
               className="text-xs bg-[#e8621a]/10 border border-[#e8621a]/20 text-[#e8621a] px-3 py-1 rounded-full font-bold flex items-center gap-1.5 hover:bg-[#e8621a] hover:text-white transition-colors"
             >
-              <FiVideo size={12} /> Intro Video
+              <FiVideo size={12} /> {t("pandits.intro_video", { defaultValue: "Intro Video" })}
             </button>
           )}
         </div>
@@ -139,7 +141,7 @@ const PanditCard = ({ pandit }) => {
                 : "bg-gray-100 text-gray-400 cursor-not-allowed border border-transparent"
             }`}
           >
-            {available ? "Book Now" : "Unavailable"}
+            {available ? t("home.book_now") : t("common.unavailable", { defaultValue: "Unavailable" })}
           </button>
         </div>
       </div>
@@ -147,15 +149,15 @@ const PanditCard = ({ pandit }) => {
       {showBooking && (
         <AppDownloadModal
           onClose={() => setShowBooking(false)}
-          title={`Book ${name} on App`}
-          subtitle="Download our app to secure your slot instantly and get 10% off!"
+          title={t("pandits.book_on_app", { name, defaultValue: `Book ${name} on App` })}
+          subtitle={t("pandits.book_subtitle", { defaultValue: "Download our app to secure your slot instantly and get 10% off!" })}
         />
       )}
 
       {showVideo && videoSrc && (
         <VideoModal
-          title={`${name} - Introduction`}
-          subtitle={`Experience: ${experience} years | ${specialization}`}
+          title={t("pandits.intro_title", { name, defaultValue: `${name} - Introduction` })}
+          subtitle={`${t("common.exp_label", { defaultValue: "Experience" })}: ${experience} ${t("common.years", { defaultValue: "years" })} | ${specialization}`}
           videoSrc={videoSrc}
           onClose={() => setShowVideo(false)}
         />

@@ -6,6 +6,7 @@ import { FaShieldAlt, FaStar, FaUserCheck, FaAward } from "react-icons/fa"
 import { FiArrowRight, FiSearch } from "react-icons/fi"
 import { useNavigate, useLocation } from "react-router-dom"
 import { MapPin, Landmark, Building2, Waves, Flame, Star, Mountain, Sun, ShieldCheck, UserPlus } from "lucide-react"
+import { useTranslation } from "react-i18next"
 
 const ITEMS_PER_PAGE = 12
 
@@ -22,12 +23,7 @@ const cityIcons = {
 
 const TOP_CITIES = ["Varanasi", "Delhi", "Mumbai", "Jaipur", "Haridwar", "Prayagraj", "Mathura", "Ujjain"]
 
-const whyTrust = [
-  { icon: <FaShieldAlt size={22} />, title: "100% Verified", desc: "Every pandit is personally verified with ID proof and background check.", color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
-  { icon: <FaStar size={22} />, title: "Rated & Reviewed", desc: "Real ratings from real customers after every puja ceremony.", color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
-  { icon: <FaUserCheck size={22} />, title: "Experienced Only", desc: "Minimum 3 years of experience required to list on PanditJi.", color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
-  { icon: <FaAward size={22} />, title: "Certified Pandits", desc: "Many pandits hold certifications from reputed Vedic institutions.", color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
-]
+// Move whyTrust inside component to use t()
 
 const Pandits = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -37,6 +33,14 @@ const Pandits = () => {
   const [panditsError, setPanditsError] = useState("")
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useTranslation()
+
+  const whyTrust = [
+    { icon: <FaShieldAlt size={22} />, title: t("pandits.trust_verified_title"), desc: t("pandits.trust_verified_desc"), color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
+    { icon: <FaStar size={22} />, title: t("pandits.trust_rated_title"), desc: t("pandits.trust_rated_desc"), color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
+    { icon: <FaUserCheck size={22} />, title: t("pandits.trust_exp_title"), desc: t("pandits.trust_exp_desc"), color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
+    { icon: <FaAward size={22} />, title: t("pandits.trust_cert_title"), desc: t("pandits.trust_cert_desc"), color: "text-[#e8621a]", bg: "from-[#e8621a]/10 to-[#f5a020]/10", border: "border-[#e8621a]/15" },
+  ]
 
   const queryParams = new URLSearchParams(location.search)
   const searchQuery = queryParams.get("search") || ""
@@ -73,7 +77,7 @@ const Pandits = () => {
         const data = res.data
         setAllPandits(Array.isArray(data) ? data : data?.pandits || data?.data || [])
       })
-      .catch(() => setPanditsError("Pandits load nahi ho paye. Please refresh karein."))
+      .catch(() => setPanditsError(t("pandits.error_loading", { defaultValue: "Failed to load pandits. Please refresh." })))
       .finally(() => setPanditsLoading(false))
   }
 
@@ -161,23 +165,23 @@ const Pandits = () => {
           <div className="inline-flex items-center gap-2 bg-[#e8621a]/5 border border-[#e8621a]/15 rounded-full px-5 py-2 mb-6">
             <ShieldCheck size={15} className="text-[#e8621a]" />
             <span className="text-[#e8621a] font-bold text-sm tracking-widest uppercase">
-              {panditsLoading ? "Loading..." : `${totalPandits}+ Verified Pandits`}
+              {panditsLoading ? t("common.loading") : t("pandits.verified_title", { count: totalPandits })}
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#b2371f] mb-5 leading-tight">
-            Find Verified<br className="hidden sm:block" /> <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Pandits Near You</span>
+            {t("pandits.find_verified")}<br className="hidden sm:block" /> <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">{t("pandits.near_you")}</span>
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-            Browse our network of experienced and verified pandits across 50+ cities in India. Book instantly for any puja or ceremony.
+            {t("pandits.hero_desc")}
           </p>
 
           {/* Stats pills */}
           <div className="flex flex-wrap gap-3 justify-center">
             {[
-              { label: "Pandits",    val: panditsLoading ? "..." : `${totalPandits}+` },
-              { label: "Available",  val: panditsLoading ? "..." : `${availablePandits}` },
-              { label: "Cities",     val: panditsLoading ? "..." : uniqueCities > 0 ? `${uniqueCities}+` : "50+" },
-              { label: "Pujas Done", val: "1 Lakh+" },
+              { label: t("navbar.pandits"),    val: panditsLoading ? "..." : `${totalPandits}+` },
+              { label: t("pandits.available_pandits"),  val: panditsLoading ? "..." : `${availablePandits}` },
+              { label: t("navbar.city"),     val: panditsLoading ? "..." : uniqueCities > 0 ? `${uniqueCities}+` : "50+" },
+              { label: t("home.avg_rating"), val: "1 Lakh+" },
             ].map(s => (
               <div key={s.label} className="bg-white border border-orange-100 rounded-2xl px-6 py-3 shadow-sm hover:shadow-md transition-shadow">
                 <span className="font-black text-xl block leading-tight text-gray-800">{s.val}</span>
@@ -211,9 +215,9 @@ const Pandits = () => {
           <div>
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-4 py-1.5 mb-2">
               <MapPin size={13} className="text-[#e8621a]" />
-              <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Browse by City</span>
+              <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("pandits.browse_city")}</span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-black text-gray-800">Top <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Sacred Cities</span></h2>
+            <h2 className="text-2xl md:text-3xl font-black text-gray-800">{t("pandits.top_cities")}</h2>
           </div>
           <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">
             {panditsLoading ? "Loading..." : `${uniqueCities > 0 ? uniqueCities : "50"}+ cities covered`}
@@ -254,24 +258,24 @@ const Pandits = () => {
                 <>
                   <div className="inline-flex items-center gap-2 bg-[#e8621a]/10 border border-[#e8621a]/20 rounded-full px-4 py-1.5 mb-2">
                     <FiSearch size={13} className="text-[#e8621a]" />
-                    <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Search Results</span>
+                    <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("pandits.search_results")}</span>
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black text-gray-800">
-                    Results for "<span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">{searchQuery}</span>"
+                    {t("pandits.results_for", { query: searchQuery })}
                   </h2>
                 </>
               ) : (
                 <>
                   <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-4 py-1.5 mb-2">
                     <span className="w-2 h-2 rounded-full bg-[#e8621a] animate-pulse"></span>
-                    <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">All Pandits</span>
+                    <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("pandits.all_pandits")}</span>
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black text-gray-800">
-                    Find Your <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Perfect Pandit</span>
+                    {t("pandits.perfect_pandit")}
                   </h2>
                 </>
               )}
-              <p className="text-gray-500 mt-1 font-medium text-sm">Use filters to narrow down by city, specialization and experience</p>
+              <p className="text-gray-500 mt-1 font-medium text-sm">{t("pandits.perfect_pandit_desc")}</p>
             </div>
             <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-5 py-3 shadow-sm shrink-0">
               <div className="text-center">
@@ -281,7 +285,7 @@ const Pandits = () => {
               <div className="w-px h-8 bg-gray-200"></div>
               <div className="text-center">
                 <p className="text-2xl font-black text-gray-800 leading-none">{totalPages}</p>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Pages</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">{t("common.pages", { defaultValue: "Pages" })}</p>
               </div>
             </div>
           </div>
@@ -298,14 +302,14 @@ const Pandits = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-black text-gray-800">
-                    Available <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Pandits</span>
+                    {t("pandits.available_pandits")}
                   </h3>
                   <span className="bg-[#e8621a]/10 text-[#e8621a] text-xs font-black px-3 py-1 rounded-full border border-[#e8621a]/20">
-                    {filteredPandits.length} found
+                    {filteredPandits.length} {t("pandits.found")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Sort:</span>
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("pandits.sort")}</span>
                   <select className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 font-semibold outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/15 shadow-sm transition-all cursor-pointer">
                     <option>Relevance</option>
                     <option>Rating: High to Low</option>
@@ -341,7 +345,7 @@ const Pandits = () => {
                       onClick={() => fetchPandits(filters)}
                       className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-bold px-6 py-2.5 rounded-xl text-sm"
                     >
-                      Retry
+                      {t("common.retry")}
                     </button>
                   </div>
                 ) : filteredPandits.length === 0 ? (
@@ -349,13 +353,13 @@ const Pandits = () => {
                     <div className="w-24 h-24 bg-gradient-to-br from-[#e8621a]/10 to-[#f5a020]/10 rounded-full flex items-center justify-center mx-auto mb-5 border border-[#e8621a]/10">
                       <FiSearch size={36} className="text-[#e8621a]/50" />
                     </div>
-                    <h3 className="text-xl font-black text-gray-700 mb-2">No Pandits Found</h3>
-                    <p className="text-gray-400 font-medium">Try adjusting your filters or select a different city</p>
+                    <h3 className="text-xl font-black text-gray-700 mb-2">{t("pandits.no_pandits")}</h3>
+                    <p className="text-gray-400 font-medium">{t("pandits.perfect_pandit_desc")}</p>
                     <button
                       onClick={() => handleFilterApply({ city: "All Cities", specializations: [], experience: "", rating: "" })}
                       className="mt-5 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-bold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all"
                     >
-                      Clear All Filters
+                      {t("pandits.clear_filters")}
                     </button>
                   </div>
                 ) : (
@@ -390,17 +394,17 @@ const Pandits = () => {
             <UserPlus size={30} className="text-white" />
           </div>
           <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
-            Are You a <span className="text-white/90 underline decoration-white/40 decoration-wavy underline-offset-4">Pandit?</span>
+            {t("pandits.are_you_pandit")}
           </h2>
           <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto font-medium leading-relaxed">
-            Join PanditJi and connect with thousands of devotees looking for experienced pandits in your city. Registration is completely free!
+            {t("pandits.register_desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/register")} className="bg-white text-[#e8621a] font-black px-10 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <UserPlus size={18} /> Register as Pandit
+              <UserPlus size={18} /> {t("pandits.register_as_pandit")}
             </button>
             <button onClick={() => navigate("/contact")} className="bg-white/15 backdrop-blur-sm border-2 border-white/40 text-white font-black px-10 py-4 rounded-2xl hover:bg-white/25 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <FiArrowRight size={18} /> Learn More
+              <FiArrowRight size={18} /> {t("pandits.learn_more")}
             </button>
           </div>
         </div>

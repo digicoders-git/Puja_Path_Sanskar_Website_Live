@@ -8,6 +8,7 @@ import {
 } from "lucide-react"
 import VideoModal, { VideoThumbnail } from "../../components/ui/VideoModal"
 import api from "../../api/axiosInstance"
+import { useTranslation } from "react-i18next"
 
 import AppDownloadModal from "../../components/ui/AppDownloadModal"
 
@@ -18,6 +19,7 @@ const InterestModal = ({ puja, onClose }) => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
+  const { t } = useTranslation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -28,7 +30,7 @@ const InterestModal = ({ puja, onClose }) => {
       setSuccess(true)
       setTimeout(onClose, 3000)
     } catch (err) {
-      setError(err?.response?.data?.message || "Kuch galat hua. Dobara try karein.")
+      setError(err?.response?.data?.message || t("interest_modal.error_general"))
     } finally {
       setLoading(false)
     }
@@ -61,13 +63,13 @@ const InterestModal = ({ puja, onClose }) => {
           {/* Puja Badge */}
           <div className="inline-flex items-center gap-2 bg-[#e8621a]/10 border border-[#e8621a]/20 rounded-full px-3 py-1 mb-3">
             <Sparkles size={12} className="text-[#e8621a]" />
-            <span className="text-[#e8621a] font-bold text-[10px] uppercase tracking-widest">{puja.pujaType || "Puja Enquiry"}</span>
+            <span className="text-[#e8621a] font-bold text-[10px] uppercase tracking-widest">{puja.pujaType || t("interest_modal.puja_enquiry")}</span>
           </div>
 
           <h2 className="text-2xl font-black text-gray-800 leading-tight">
-            Interested in <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">{puja.pujaName}?</span>
+            {t("interest_modal.interested_in")} <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">{puja.pujaName}?</span>
           </h2>
-          <p className="text-gray-500 text-sm font-medium mt-1">Apni details bharo — hamari team 1 ghante mein contact karegi 🙏</p>
+          <p className="text-gray-500 text-sm font-medium mt-1">{t("interest_modal.fill_details")}</p>
         </div>
 
         <div className="px-7 pb-7">
@@ -80,9 +82,9 @@ const InterestModal = ({ puja, onClose }) => {
                   <FaCheckCircle size={36} className="text-white" />
                 </div>
               </div>
-              <h3 className="font-black text-gray-800 text-2xl mb-2">Shukriya! 🙏</h3>
-              <p className="text-gray-500 font-medium">Aapki enquiry submit ho gayi.</p>
-              <p className="text-gray-400 text-sm mt-1">Hamari team jald hi <span className="text-[#e8621a] font-bold">{form.mobile}</span> pe contact karegi.</p>
+              <h3 className="font-black text-gray-800 text-2xl mb-2">{t("interest_modal.thank_you")}</h3>
+              <p className="text-gray-500 font-medium">{t("interest_modal.enquiry_submitted")}</p>
+              <p className="text-gray-400 text-sm mt-1">{t("interest_modal.contact_soon")} <span className="text-[#e8621a] font-bold">{form.mobile}</span>.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-5">
@@ -90,23 +92,23 @@ const InterestModal = ({ puja, onClose }) => {
               {/* Name + Mobile Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="group">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Aapka Naam *</label>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("interest_modal.your_name")}</label>
                   <input
                     required
                     type="text"
-                    placeholder="Jaise: Vivek Raj"
+                    placeholder={t("interest_modal.name_placeholder")}
                     value={form.name}
                     onChange={e => setForm({ ...form, name: e.target.value })}
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400"
                   />
                 </div>
                 <div className="group">
-                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Mobile Number *</label>
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("interest_modal.mobile_number")}</label>
                   <input
                     required
                     type="tel"
                     maxLength={10}
-                    placeholder="10 digit number"
+                    placeholder={t("interest_modal.mobile_placeholder")}
                     value={form.mobile}
                     onChange={e => setForm({ ...form, mobile: e.target.value })}
                     className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400"
@@ -116,10 +118,10 @@ const InterestModal = ({ puja, onClose }) => {
 
               {/* Message */}
               <div className="group">
-                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">Aapka Message (Optional)</label>
+                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 block group-focus-within:text-[#e8621a] transition-colors">{t("interest_modal.your_message")}</label>
                 <textarea
                   rows={3}
-                  placeholder={`Jaise: Mujhe ${puja.pujaName} karwani hai...`}
+                  placeholder={t("interest_modal.message_placeholder", { name: puja.pujaName })}
                   value={form.message}
                   onChange={e => setForm({ ...form, message: e.target.value })}
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:bg-white focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all font-medium text-gray-700 placeholder-gray-400 resize-none"
@@ -129,7 +131,7 @@ const InterestModal = ({ puja, onClose }) => {
               {/* Trust badges */}
               <div className="flex items-center gap-4 bg-[#fffaf4] rounded-xl px-4 py-3 border border-[#e8621a]/10">
                 <ShieldCheck size={18} className="text-[#e8621a] shrink-0" />
-                <p className="text-xs text-gray-500 font-medium">Aapki details <span className="text-gray-700 font-bold">100% safe</span> hain. Kisi ke saath share nahi ki jaayegi.</p>
+                <p className="text-xs text-gray-500 font-medium">{t("interest_modal.safe_details")}</p>
               </div>
 
               {error && (
@@ -151,9 +153,9 @@ const InterestModal = ({ puja, onClose }) => {
                   className="flex-[2] bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white py-3.5 rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-[#e8621a]/25 hover:shadow-xl hover:shadow-[#e8621a]/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {loading ? (
-                    <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> Submitting...</>
+                    <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> {t("interest_modal.submitting")}</>
                   ) : (
-                    <><FiCheck size={16} /> Submit Enquiry</>
+                    <><FiCheck size={16} /> {t("interest_modal.submit_enquiry")}</>
                   )}
                 </button>
               </div>
@@ -171,6 +173,7 @@ const PujaCard = ({ puja }) => {
   const [showInterest, setShowInterest] = useState(false)
   const [panditCount, setPanditCount] = useState(null)
   const [panditList, setPanditList] = useState([])
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!puja._id) return
@@ -219,7 +222,7 @@ const PujaCard = ({ puja }) => {
                 )}
                 <span className="flex items-center gap-1 bg-green-50 text-green-600 px-2 py-0.5 rounded-full">
                   <FiUsers size={11} />
-                  {panditCount === null ? "..." : `${panditCount} Pandits`}
+                  {panditCount === null ? "..." : `${panditCount} ${t("navbar.pandits")}`}
                 </span>
               </div>
             </div>
@@ -233,7 +236,7 @@ const PujaCard = ({ puja }) => {
 
           <div className="mt-4 flex items-center justify-between border-t border-gray-50 pt-4">
             <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Price / Dakshina</p>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{t("pujas.price_dakshina")}</p>
               <p className="text-lg font-black text-[#e8621a] leading-none">
                 ₹{puja.basePrice || 0}
               </p>
@@ -243,14 +246,14 @@ const PujaCard = ({ puja }) => {
                 onClick={() => setExpanded(!expanded)}
                 className="text-[#e8621a] font-black text-xs uppercase tracking-widest flex items-center gap-1 hover:gap-2 transition-all"
               >
-                {expanded ? 'Less Info' : 'More Info'} <FiChevronDown className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+                {expanded ? t("pujas.less_info") : t("pujas.more_info")} <FiChevronDown className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
               </button>
             )}
           </div>
 
           {expanded && includesList.length > 0 && (
             <div className="mt-4 bg-gray-50 rounded-xl p-4 animate-in fade-in slide-in-from-top-2 duration-300">
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2.5">What's Included</p>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2.5">{t("pujas.what_is_included")}</p>
               <ul className="grid grid-cols-1 gap-2">
                 {includesList.map((item) => (
                   <li key={item} className="flex items-center gap-2 text-xs font-bold text-gray-600">
@@ -270,13 +273,13 @@ const PujaCard = ({ puja }) => {
               onClick={() => setShowInterest(true)}
               className="flex-1 bg-white border-2 border-[#e8621a] text-[#e8621a] py-3.5 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-[#e8621a]/5 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
             >
-              <Sparkles size={15} /> Show Interest
+              <Sparkles size={15} /> {t("pujas.show_interest")}
             </button>
             <button
               onClick={() => setShowBooking(true)}
               className="flex-1 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white py-3.5 rounded-xl font-black text-sm uppercase tracking-widest shadow-md shadow-[#e8621a]/20 hover:shadow-lg hover:shadow-[#e8621a]/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
             >
-              <Zap size={16} fill="currentColor" /> Book Now
+              <Zap size={16} fill="currentColor" /> {t("home.book_now")}
             </button>
           </div>
         </div>
@@ -285,8 +288,8 @@ const PujaCard = ({ puja }) => {
       {showBooking && (
         <AppDownloadModal
           onClose={() => setShowBooking(false)}
-          title={`Book ${puja.pujaName} on App`}
-          subtitle="Download our app to secure your slot instantly and get 10% off!"
+          title={t("pandits.book_on_app", { name: puja.pujaName, defaultValue: `Book ${puja.pujaName} on App` })}
+          subtitle={t("pandits.book_subtitle")}
         />
       )}
 
@@ -306,6 +309,7 @@ const Pujas = () => {
   const [pujas, setPujas] = useState([])
   const [pujaLoading, setPujaLoading] = useState(true)
   const [pujaError, setPujaError] = useState("")
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchPujas = async () => {
@@ -314,7 +318,7 @@ const Pujas = () => {
         const data = res.data
         setPujas(Array.isArray(data) ? data : data?.pujas || data?.data || [])
       } catch (err) {
-        setPujaError("Pujas load nahi ho payi. Please refresh karein.")
+        setPujaError(t("pujas.error_loading", { defaultValue: "Failed to load pujas. Please refresh." }))
       } finally {
         setPujaLoading(false)
       }
@@ -344,21 +348,21 @@ const Pujas = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-[#e8621a]/5 border border-[#e8621a]/15 rounded-full px-5 py-2 mb-6">
             <Sparkles size={15} className="text-[#e8621a]" />
-            <span className="text-[#e8621a] font-bold text-sm tracking-widest uppercase">Sacred Vedic Rituals</span>
+            <span className="text-[#e8621a] font-bold text-sm tracking-widest uppercase">{t("pujas.sacred_rituals")}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#b2371f] mb-5 leading-tight">
-            Explore All<br className="hidden sm:block" /> <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Puja Services</span>
+            {t("pujas.explore_pujas")}<br className="hidden sm:block" /> <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">{t("pujas.puja_services")}</span>
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-            Experience the divine through our complete range of religious ceremonies and Vedic rituals performed by verified experts.
+            {t("pujas.hero_desc")}
           </p>
 
           <div className="flex flex-wrap gap-3 justify-center">
             {[
-              { label: "Puja Types", val: "50+" },
-              { label: "Verified Pandits", val: "5000+" },
-              { label: "Pujas Done", val: "1 Lakh+" },
-              { label: "Cities Covered", val: "50+" },
+              { label: t("pujas.puja_types"), val: "50+" },
+              { label: t("navbar.pandits"), val: "5000+" },
+              { label: t("home.pujas_completed"), val: "1 Lakh+" },
+              { label: t("navbar.city"), val: "50+" },
             ].map(s => (
               <div key={s.label} className="bg-white border border-orange-100 rounded-2xl px-6 py-3 shadow-sm hover:shadow-md transition-shadow">
                 <span className="font-black text-xl block leading-tight text-gray-800">{s.val}</span>
@@ -375,7 +379,7 @@ const Pujas = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex items-center gap-2 mb-6">
             <Video size={20} className="text-[#e8621a]" />
-            <h2 className="text-2xl font-black text-gray-800 tracking-tight">Watch Real <span className="text-[#e8621a]">Pujas</span></h2>
+            <h2 className="text-2xl font-black text-gray-800 tracking-tight">{t("pujas.watch_real")} <span className="text-[#e8621a]">{t("pujas.pujas")}</span></h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <VideoThumbnail 
@@ -408,19 +412,19 @@ const Pujas = () => {
           <div>
             <div className="inline-flex items-center gap-2 bg-[#e8621a]/10 border border-[#e8621a]/20 rounded-full px-4 py-1.5 mb-2">
               <span className="w-2 h-2 rounded-full bg-[#e8621a] animate-pulse"></span>
-              <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Our Services</span>
+              <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("pujas.our_services")}</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-800">Browse <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">All Pujas</span></h2>
-            <p className="text-gray-500 mt-2 font-medium">Select a category or search for a specific ceremony</p>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-800">{t("pujas.browse_all")}</h2>
+            <p className="text-gray-500 mt-2 font-medium">{t("pujas.browse_desc")}</p>
           </div>
           <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-sm">
             <span className="text-xs font-black text-gray-400 uppercase tracking-wider">Sort:</span>
             <select className="bg-transparent border-none text-sm text-gray-700 font-bold outline-none cursor-pointer">
-              <option>All Categories</option>
-              <option>Wedding Rituals</option>
-              <option>Home Ceremonies</option>
-              <option>Festival Pujas</option>
-              <option>Ancestral Rites</option>
+              <option>{t("pujas.all_categories")}</option>
+              <option>{t("pujas.wedding_rituals")}</option>
+              <option>{t("pujas.home_ceremonies")}</option>
+              <option>{t("pujas.festival_pujas")}</option>
+              <option>{t("pujas.ancestral_rites")}</option>
             </select>
           </div>
         </div>
@@ -429,7 +433,7 @@ const Pujas = () => {
           {pujaLoading ? (
             <div className="col-span-3 flex flex-col items-center justify-center py-24 gap-4">
               <Loader2 size={40} className="text-[#e8621a] animate-spin" />
-              <p className="text-gray-400 font-medium">Pujas load ho rahi hain...</p>
+              <p className="text-gray-400 font-medium">{t("common.loading")}</p>
             </div>
           ) : pujaError ? (
             <div className="col-span-3 text-center py-20">
@@ -438,10 +442,10 @@ const Pujas = () => {
               </div>
               <p className="text-red-500 font-bold text-base">{pujaError}</p>
               <button
-                onClick={() => { setPujaError(""); setPujaLoading(true); api.get("/pujas").then(r => setPujas(r.data)).catch(() => setPujaError("Pujas load nahi ho payi.")).finally(() => setPujaLoading(false)) }}
+                onClick={() => { setPujaError(""); setPujaLoading(true); api.get("/pujas").then(r => setPujas(r.data)).catch(() => setPujaError(t("pujas.error_loading"))).finally(() => setPujaLoading(false)) }}
                 className="mt-4 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-bold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg transition-all"
               >
-                Retry
+                {t("common.retry")}
               </button>
             </div>
           ) : pujas.length === 0 ? (
@@ -461,10 +465,10 @@ const Pujas = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-[#e8621a]/10 border border-[#e8621a]/20 rounded-full px-4 py-1.5 mb-2">
               <ShieldCheck size={13} className="text-[#e8621a]" />
-              <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">The Process</span>
+              <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("pujas.the_process", { defaultValue: "The Process" })}</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-800">How a Puja is <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Performed</span></h2>
-            <p className="text-gray-500 text-sm mt-3 font-medium">A typical puja ceremony follows these sacred steps</p>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-800">{t("pujas.performed_title")}</h2>
+            <p className="text-gray-500 text-sm mt-3 font-medium">{t("pujas.performed_desc")}</p>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
@@ -491,14 +495,14 @@ const Pujas = () => {
       {/* ─── Contact Section ─── */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-20 text-center">
         <div className="bg-gradient-to-br from-white to-[#f9f7f5] rounded-[2.5rem] p-10 sm:p-16 shadow-[0_30px_100px_rgba(242,141,88,0.1)] border border-gray-100">
-          <h2 className="text-3xl sm:text-4xl font-black text-gray-800 mb-4 leading-tight">Can't find your <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Puja?</span></h2>
-          <p className="text-gray-500 mb-10 text-lg font-medium">Contact our specialized team and we'll connect you with the right expert for any specific ceremony or ritual.</p>
+          <h2 className="text-3xl sm:text-4xl font-black text-gray-800 mb-4 leading-tight">{t("pujas.cant_find_puja")}</h2>
+          <p className="text-gray-500 mb-10 text-lg font-medium">{t("pujas.cant_find_desc")}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate('/contact')} className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-black px-10 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(242,141,88,0.3)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-               Contact Support Now
+               {t("pujas.contact_support")}
             </button>
             <button onClick={() => navigate('/pandits')} className="bg-white border-2 border-gray-200 text-gray-700 font-black px-10 py-4 rounded-2xl hover:border-[#e8621a] hover:text-[#e8621a] transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              Find a Pandit
+              {t("navbar.find_pandit")}
             </button>
           </div>
         </div>

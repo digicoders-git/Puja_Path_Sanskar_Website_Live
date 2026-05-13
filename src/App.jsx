@@ -13,6 +13,7 @@ import Legal from "./pages/Legal/Legal"
 import Loader from "./components/ui/Loader"
 import GlobalAppCTA from "./components/ui/GlobalAppCTA"
 import WelcomePopup from "./components/ui/WelcomePopup"
+import LanguageSwitcher from "./components/ui/LanguageSwitcher"
 
 function AppContent() {
   const [loading, setLoading] = useState(true)
@@ -71,6 +72,7 @@ function AppContent() {
       </main>
       <Footer />
       <GlobalAppCTA />
+      <LanguageSwitcher />
       </div>
     </>
   )

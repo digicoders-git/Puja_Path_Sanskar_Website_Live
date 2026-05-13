@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import api from "../../api/axiosInstance"
 import { cities } from "../../data/cities"
 import PanditCard from "../../components/ui/PanditCard"
@@ -17,37 +18,8 @@ import {
 
 import logoImg from "../../assets/img.jpeg"
 
-const categories = [
-  { icon: <Heart size={28} className="text-pink-500" />, label: "Vivah Puja" },
-  { icon: <BookOpen size={28} className="text-blue-500" />, label: "Griha Pravesh" },
-  { icon: <Sparkles size={28} className="text-gray-600" />, label: "Ganesh Puja" },
-  { icon: <Flower2 size={28} className="text-pink-400" />, label: "Navratri Puja" },
-  { icon: <StarIcon size={28} className="text-orange-500" />, label: "Satyanarayan" },
-  { icon: <Flame size={28} className="text-red-500" />, label: "Havan" },
-  { icon: <Baby size={28} className="text-yellow-500" />, label: "Namkaran" },
-  { icon: <Moon size={28} className="text-indigo-500" />, label: "Shradh Puja" },
-]
+  // Data moved inside component to use translation
 
-const stats = [
-  { value: "5000+", label: "Verified Pandits", icon: <ShieldCheck size={28} /> },
-  { value: "50+", label: "Cities Covered", icon: <MapPin size={28} /> },
-  { value: "1 Lakh+", label: "Pujas Completed", icon: <TrendingUp size={28} /> },
-  { value: "4.8", label: "Average Rating", icon: <Trophy size={28} /> },
-]
-
-const howItWorks = [
-  { step: "01", icon: <Search size={32} />, title: "Search by Location", desc: "Enter your city and find verified pandits available near you." },
-  { step: "02", icon: <Users size={32} />, title: "Choose a Pandit", desc: "Browse profiles, read reviews, and select the best pandit for your ceremony." },
-  { step: "03", icon: <Calendar size={32} />, title: "Book Puja", desc: "Pick your date, fill in details, and confirm your booking instantly." },
-  { step: "04", icon: <ShieldCheck size={32} />, title: "Perform Puja Done!", desc: "Your pandit arrives on time and performs the ceremony with full devotion." },
-]
-
-const testimonials = [
-  { name: "Priya Sharma", city: "Delhi", rating: 5, text: "Pt. Ramesh Sharma performed our Griha Pravesh puja beautifully. Very knowledgeable and punctual. Highly recommended!", puja: "Griha Pravesh" },
-  { name: "Rahul Gupta", city: "Mumbai", rating: 5, text: "Booked Pt. Mahesh Pandey for our son's Namkaran ceremony. He explained every ritual in detail. Excellent experience!", puja: "Namkaran" },
-  { name: "Sunita Devi", city: "Varanasi", rating: 5, text: "Pt. Vijay Dubey conducted Shradh puja with great devotion. Very satisfied with the service. Will book again.", puja: "Shradh Puja" },
-  { name: "Amit Verma", city: "Jaipur", rating: 4, text: "Found a great pandit for our Satyanarayan Katha within minutes. The platform is very easy to use.", puja: "Satyanarayan Puja" },
-]
 
 // --- Dynamic Festival Dates System ---
 const FESTIVAL_DATES = {
@@ -107,11 +79,8 @@ const upcomingFestivals = [
 //   { name: "Premium Puja", price: "₹5,100", color: "border-yellow-400", badge: "Best Value", features: ["2 Pandits", "Full day ceremony", "All samagri included", "Havan + Katha", "Decoration setup", "Video recording", "Certificate of puja"] },
 // ]
 
-const sacredTexts = [
-  { title: "Significance of Griha Pravesh", desc: "Griha Pravesh is performed to purify the new home and invite positive energy. The ritual involves Vastu Shanti, Ganesh Puja, and Havan to bless the household.", extra: "The ceremony is ideally performed on an auspicious muhurat chosen by a pandit. It includes Navagraha Puja, Vastu Devata worship, and lighting of the sacred fire. The ritual ensures the home is free from negative energies and blesses all family members with health, wealth, and harmony.", icon: <BookOpen size={36} className="text-orange-500" /> },
-  { title: "Why Satyanarayan Katha?", desc: "Lord Vishnu's Satyanarayan Katha is performed on auspicious occasions to seek blessings for prosperity, health, and happiness in the family.", extra: "The Katha narrates five stories from the Skanda Purana and is typically performed on Purnima (full moon day), during housewarmings, marriages, or business inaugurations. Devotees offer panchamrit, fruits, and tulsi leaves. It is believed that sincere observance fulfills all wishes and removes obstacles from life.", icon: <StarIcon size={36} className="text-orange-500" /> },
-  { title: "Importance of Vivah Puja", desc: "The Vivah ceremony is one of the 16 samskaras. The Saptapadi (7 vows) taken around the sacred fire bind two souls together for eternity.", extra: "The Vivah rituals include Ganesh Puja, Var Mala, Kanyadan, Mangalsutra ceremony, and Sindoor Daan. Each ritual holds deep spiritual significance. The sacred fire (Agni) is the divine witness to the union. A qualified pandit ensures all rituals are performed in the correct sequence with proper Vedic mantras.", icon: <Heart size={32} className="text-orange-500" /> },
-]
+  // Sacred texts moved inside component
+
 
 const ITEMS_PER_PAGE = 6
 
@@ -125,6 +94,45 @@ const Home = () => {
   const [allPandits, setAllPandits] = useState([])
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const categories = [
+    { icon: <Heart size={28} className="text-pink-500" />, label: t("pujas.wedding_rituals") },
+    { icon: <BookOpen size={28} className="text-blue-500" />, label: t("pujas.home_ceremonies") },
+    { icon: <Sparkles size={28} className="text-gray-600" />, label: "Ganesh Puja" },
+    { icon: <Flower2 size={28} className="text-pink-400" />, label: t("pujas.festival_pujas") },
+    { icon: <StarIcon size={28} className="text-orange-500" />, label: "Satyanarayan" },
+    { icon: <Flame size={28} className="text-red-500" />, label: "Havan" },
+    { icon: <Baby size={28} className="text-yellow-500" />, label: "Namkaran" },
+    { icon: <Moon size={28} className="text-indigo-500" />, label: t("pujas.ancestral_rites") },
+  ]
+
+  const stats = [
+    { value: "5000+", label: t("home.verified_pandits"), icon: <ShieldCheck size={28} /> },
+    { value: "50+", label: t("home.cities_50"), icon: <MapPin size={28} /> },
+    { value: "1 Lakh+", label: t("home.secure_booking"), icon: <TrendingUp size={28} /> },
+    { value: "4.8", label: t("home.avg_rating"), icon: <Trophy size={28} /> },
+  ]
+
+  const howItWorks = [
+    { step: "01", icon: <Search size={32} />, title: t("home.steps.step_1_title"), desc: t("home.steps.step_1_desc") },
+    { step: "02", icon: <Users size={32} />, title: t("home.steps.step_2_title"), desc: t("home.steps.step_2_desc") },
+    { step: "03", icon: <Calendar size={32} />, title: t("home.steps.step_3_title"), desc: t("home.steps.step_3_desc") },
+    { step: "04", icon: <ShieldCheck size={32} />, title: t("home.steps.step_4_title"), desc: t("home.steps.step_4_desc") },
+  ]
+
+  const sacredTexts = [
+    { title: t("pujas.home_ceremonies"), desc: "Griha Pravesh is performed to purify the new home and invite positive energy. The ritual involves Vastu Shanti, Ganesh Puja, and Havan to bless the household.", extra: "The ceremony is ideally performed on an auspicious muhurat chosen by a pandit. It includes Navagraha Puja, Vastu Devata worship, and lighting of the sacred fire. The ritual ensures the home is free from negative energies and blesses all family members with health, wealth, and harmony.", icon: <BookOpen size={36} className="text-orange-500" /> },
+    { title: "Satyanarayan Katha", desc: "Lord Vishnu's Satyanarayan Katha is performed on auspicious occasions to seek blessings for prosperity, health, and happiness in the family.", extra: "The Katha narrates five stories from the Skanda Purana and is typically performed on Purnima (full moon day), during housewarmings, marriages, or business inaugurations. Devotees offer panchamrit, fruits, and tulsi leaves. It is believed that sincere observance fulfills all wishes and removes obstacles from life.", icon: <StarIcon size={36} className="text-orange-500" /> },
+    { title: t("pujas.wedding_rituals"), desc: "The Vivah ceremony is one of the 16 samskaras. The Saptapadi (7 vows) taken around the sacred fire bind two souls together for eternity.", extra: "The Vivah rituals include Ganesh Puja, Var Mala, Kanyadan, Mangalsutra ceremony, and Sindoor Daan. Each ritual holds deep spiritual significance. The sacred fire (Agni) is the divine witness to the union. A qualified pandit ensures all rituals are performed in the correct sequence with proper Vedic mantras.", icon: <Heart size={32} className="text-orange-500" /> },
+  ]
+
+  const testimonials = [
+    { name: "Priya Sharma", city: "Delhi", rating: 5, text: t("home.testimonials_text_1", { defaultValue: "Pt. Ramesh Sharma performed our Griha Pravesh puja beautifully. Very knowledgeable and punctual. Highly recommended!" }), puja: t("pujas.home_ceremonies") },
+    { name: "Rahul Gupta", city: "Mumbai", rating: 5, text: t("home.testimonials_text_2", { defaultValue: "Booked Pt. Mahesh Pandey for our son's Namkaran ceremony. He explained every ritual in detail. Excellent experience!" }), puja: "Namkaran" },
+    { name: "Sunita Devi", city: "Varanasi", rating: 5, text: t("home.testimonials_text_3", { defaultValue: "Pt. Vijay Dubey conducted Shradh puja with great devotion. Very satisfied with the service. Will book again." }), puja: t("pujas.ancestral_rites") },
+    { name: "Amit Verma", city: "Jaipur", rating: 4, text: t("home.testimonials_text_4", { defaultValue: "Found a great pandit for our Satyanarayan Katha within minutes. The platform is very easy to use." }), puja: "Satyanarayan Puja" },
+  ]
 
   useEffect(() => {
     api.get("/pandits/active").then(res => {
@@ -216,12 +224,12 @@ const Home = () => {
           
           {/* Main Heading */}
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-4 leading-[1.2] sm:leading-snug text-[#b2371f] drop-shadow-sm tracking-tight uppercase">
-            Har Puja Ke Liye <br className="sm:hidden" /> Sahi Pandit
+            {t("home.hero_title")}
           </h1>
           
           {/* Subtitle */}
           <p className="text-gray-600 text-sm sm:text-base md:text-lg mb-5 max-w-xl mx-auto font-medium tracking-normal">
-            Book experienced pandits for Vivah, Griha Pravesh, Havan & more.
+            {t("home.hero_subtitle")}
           </p>
 
           {/* Book Now CTA Button */}
@@ -230,7 +238,7 @@ const Home = () => {
             className="mb-7 group relative inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-semibold px-8 py-3 rounded-xl text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(242,141,88,0.4)] hover:shadow-[0_0_35px_rgba(242,141,88,0.6)] hover:-translate-y-0.5 transition-all duration-300"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping absolute -top-0.5 -right-0.5"></span>
-            <Calendar size={16} /> Book Now
+            <Calendar size={16} /> {t("home.book_now")}
           </button>
 
 
@@ -240,10 +248,10 @@ const Home = () => {
               {/* Mobile: 2x2 grid | Desktop: single row */}
               <div className="grid grid-cols-2 sm:flex sm:flex-row sm:justify-center sm:items-center sm:gap-x-10 gap-x-4 gap-y-3">
                 {[
-                  "100% Verified Pandits",
-                  "50+ Cities",
-                  "Secure Booking",
-                  "4.8 Avg Rating"
+                  t("home.verified_pandits"),
+                  t("home.cities_50"),
+                  t("home.secure_booking"),
+                  t("home.avg_rating")
                 ].map((item, i) => (
                   <div key={item} className="flex items-center justify-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#e8621a] shrink-0"></span>
@@ -344,12 +352,12 @@ const Home = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div className="max-w-2xl">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
-              Upcoming <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Festivals & Muhurat</span>
+              {t("home.upcoming_festivals")}
             </h2>
-            <p className="text-gray-500 mt-2 text-lg font-medium">Book your pandit in advance for these highly auspicious occasions.</p>
+            <p className="text-gray-500 mt-2 text-lg font-medium">{t("home.upcoming_festivals_desc")}</p>
           </div>
           <button onClick={() => navigate("/pujas")} className="group flex items-center gap-2 bg-[#fffaf4] text-[#e8621a] px-6 py-3 rounded-full font-bold shadow-md border border-[#e8621a]/20 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-            View All <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            {t("common.view_all")} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
@@ -386,9 +394,9 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
-              Browse by <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Puja Type</span>
+              {t("home.browse_by_puja")}
             </h2>
-            <p className="text-gray-500 mt-3 font-medium max-w-2xl mx-auto">Select from our wide range of authentic Vedic ceremonies performed by verified Pandits.</p>
+            <p className="text-gray-500 mt-3 font-medium max-w-2xl mx-auto">{t("home.browse_by_puja_desc")}</p>
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4 md:gap-5">
@@ -414,9 +422,9 @@ const Home = () => {
         
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
-            How It <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Works</span>
+            {t("home.how_it_works_title")}
           </h2>
-          <p className="text-gray-500 text-lg font-medium mt-3">Book your authentic Vedic pandit in 4 simple steps</p>
+          <p className="text-gray-500 text-lg font-medium mt-3">{t("home.how_it_works_subtitle")}</p>
         </div>
 
         <div className="relative">
@@ -494,22 +502,22 @@ const Home = () => {
             <div>
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-4 py-1.5 mb-3">
                 <span className="w-2 h-2 rounded-full bg-[#e8621a] animate-pulse"></span>
-                <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">Browse Pandits</span>
+                <span className="text-[#e8621a] font-bold text-xs uppercase tracking-widest">{t("pandits.all_pandits")}</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
-                Find Your <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Perfect Pandit</span>
+                {t("home.find_perfect_pandit")}
               </h2>
-              <p className="text-gray-500 mt-2 font-medium">Use filters to narrow down by city, specialization and experience</p>
+              <p className="text-gray-500 mt-2 font-medium">{t("home.find_perfect_pandit_desc")}</p>
             </div>
             <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-5 py-3 shadow-sm">
               <div className="text-center">
                 <p className="text-2xl font-black bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent leading-none">{filteredPandits.length}</p>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Pandits</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">{t("navbar.pandits")}</p>
               </div>
               <div className="w-px h-8 bg-gray-200"></div>
               <div className="text-center">
                 <p className="text-2xl font-black text-gray-800 leading-none">50+</p>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Cities</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">{t("navbar.city")}</p>
               </div>
             </div>
           </div>
@@ -524,14 +532,14 @@ const Home = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                 <div className="flex items-center gap-3">
                   <h3 className="text-xl font-black text-gray-800">
-                    Available <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Pandits</span>
+                    {t("pandits.available_pandits")}
                   </h3>
                   <span className="bg-[#e8621a]/10 text-[#e8621a] text-xs font-black px-3 py-1 rounded-full border border-[#e8621a]/20">
-                    {filteredPandits.length} found
+                    {filteredPandits.length} {t("pandits.found")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Sort:</span>
+                  <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("pandits.sort")}</span>
                   <select className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 font-semibold outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/15 shadow-sm transition-all cursor-pointer">
                     <option>Relevance</option>
                     <option>Rating: High to Low</option>
@@ -548,13 +556,13 @@ const Home = () => {
                     <div className="w-24 h-24 bg-gradient-to-br from-[#e8621a]/10 to-[#f5a020]/10 rounded-full flex items-center justify-center mx-auto mb-5 border border-[#e8621a]/10">
                       <Search size={48} className="text-[#e8621a]/50" />
                     </div>
-                    <h3 className="text-xl font-black text-gray-700 mb-2">No Pandits Found</h3>
+                    <h3 className="text-xl font-black text-gray-700 mb-2">{t("pandits.no_pandits")}</h3>
                     <p className="text-gray-400 font-medium">Try adjusting your filters or select a different city</p>
                     <button
                       onClick={() => handleFilterApply({ city: "All Cities", specializations: [], experience: "", rating: "" })}
                       className="mt-5 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-bold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg hover:-translate-y-0.5 transition-all"
                     >
-                      Clear All Filters
+                      {t("pandits.clear_filters")}
                     </button>
                   </div>
                 ) : (
@@ -595,14 +603,12 @@ const Home = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-5 py-2 mb-5">
               <BookOpen size={20} className="text-[#e8621a]" />
-              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">Sacred Knowledge</span>
+              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">{t("home.sacred_knowledge")}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-4 leading-tight">
-              Ancient <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Wisdom</span>
+            <h2 className="text-3xl md:text-4xl font-black text-gray-800">
+              {t("home.sacred_knowledge_title", { defaultValue: "Ancient Vedic Wisdom" })}
             </h2>
-            <p className="text-gray-500 text-lg max-w-xl mx-auto font-medium leading-relaxed">
-              Discover the deep spiritual significance of Hindu rituals and sacred ceremonies
-            </p>
+            <p className="text-gray-500 mt-4 text-lg font-medium max-w-2xl mx-auto">{t("home.sacred_knowledge_desc")}</p>
           </div>
 
           {/* Cards Grid */}
@@ -648,7 +654,7 @@ const Home = () => {
                     onClick={() => setExpandedCard(expandedCard === item.title ? null : item.title)}
                     className="mt-6 self-start flex items-center gap-2 text-sm font-bold text-[#e8621a] bg-[#e8621a]/8 hover:bg-gradient-to-r hover:from-[#e8621a] hover:to-[#f5a020] hover:text-white px-4 py-2 rounded-xl transition-all duration-300"
                   >
-                    {expandedCard === item.title ? "Show Less" : "Read More"}
+                    {expandedCard === item.title ? t("pujas.less_info") : t("pujas.more_info")}
                     <ArrowRight size={14} className={`transition-transform duration-300 ${expandedCard === item.title ? "rotate-90" : "group-hover:translate-x-1"}`} />
                   </button>
                 </div>
@@ -672,13 +678,13 @@ const Home = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-5 py-2 mb-5">
               <Star size={15} className="text-[#e8621a] fill-[#e8621a]" />
-              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">Customer Reviews</span>
+              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">{t("home.testimonials_title")}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-4 leading-tight">
-              What Our <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Families Say</span>
+              {t("home.families_say")}
             </h2>
             <p className="text-gray-500 text-lg max-w-xl mx-auto font-medium leading-relaxed">
-              Real experiences from thousands of devotees across India
+              {t("home.families_say_desc")}
             </p>
 
             {/* Overall Rating Bar */}
@@ -692,8 +698,8 @@ const Home = () => {
                 <div className="flex items-center gap-1 mb-1">
                   {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={18} className="text-[#e8621a] fill-[#e8621a]" />)}
                 </div>
-                <p className="text-sm font-bold text-gray-700">Trusted by 1 Lakh+ families</p>
-                <p className="text-xs text-gray-400 font-medium">Verified reviews only</p>
+                <p className="text-sm font-bold text-gray-700">{t("home.find_perfect_pandit_desc")}</p>
+                <p className="text-xs text-gray-400 font-medium">{t("home.secure_booking")}</p>
               </div>
             </div>
           </div>
@@ -718,8 +724,8 @@ const Home = () => {
               <div className="flex items-center gap-1 mb-4">
                 {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={20} className="text-[#e8621a] fill-[#e8621a]" />)}
               </div>
-              <h3 className="text-2xl font-black text-gray-800 mb-4">"Absolutely flawless experience from booking to completion!"</h3>
-              <p className="text-gray-500 text-lg leading-relaxed mb-6 font-medium">"We were so worried about finding an authentic pandit for our Griha Pravesh in a new city. PanditJi app not only provided a verified expert but also ensured all samagri was handled perfectly. The video shows exactly how smooth the whole process was."</p>
+              <h3 className="text-2xl font-black text-gray-800 mb-4">{t("home.testimonials_highlight_title", { defaultValue: "\"Absolutely flawless experience from booking to completion!\"" })}</h3>
+              <p className="text-gray-500 text-lg leading-relaxed mb-6 font-medium">{t("home.testimonials_highlight_desc", { defaultValue: "\"We were so worried about finding an authentic pandit for our Griha Pravesh in a new city. PanditJi app not only provided a verified expert but also ensured all samagri was handled perfectly.\"" })}</p>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-lg">S</div>
                 <div>
@@ -789,13 +795,13 @@ const Home = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#e8621a]/10 to-[#f5a020]/10 border border-[#e8621a]/20 rounded-full px-5 py-2 mb-5">
               <ShieldCheck size={15} className="text-[#e8621a]" />
-              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">Why Us</span>
+              <span className="text-[#e8621a] font-bold text-sm uppercase tracking-widest">{t("home.why_choose_us")}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-4 leading-tight">
-              Why Choose <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">PanditJi?</span>
+              {t("home.why_choose_us")}
             </h2>
             <p className="text-gray-500 text-lg max-w-xl mx-auto font-medium">
-              The most trusted platform to book verified pandits across India
+              {t("home.why_choose_us_desc")}
             </p>
           </div>
 
@@ -804,20 +810,20 @@ const Home = () => {
             {[
               {
                 icon: <ShieldCheck size={36} />,
-                title: "Verified Pandits",
-                desc: "All pandits are background-checked and verified before listing on our platform.",
+                title: t("pandits.trust_verified_title"),
+                desc: t("pandits.trust_verified_desc"),
                 badge: "100% Safe",
               },
               {
                 icon: <Calendar size={36} />,
-                title: "Easy Booking",
-                desc: "Book in minutes with flexible scheduling. Cancel up to 24 hours before the ceremony.",
+                title: t("home.steps.step_3_title"),
+                desc: t("home.steps.step_3_desc"),
                 badge: "Instant Confirm",
               },
               {
                 icon: <MessageSquare size={36} />,
-                title: "Real Reviews",
-                desc: "Genuine ratings and reviews from verified customers only — no fake testimonials.",
+                title: t("pandits.trust_rated_title"),
+                desc: t("pandits.trust_rated_desc"),
                 badge: "Trusted",
               },
             ].map((item, idx) => (
@@ -865,17 +871,17 @@ const Home = () => {
             <Flame size={32} className="text-white" />
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
-            Are You a <span className="text-white/90 underline decoration-white/40 decoration-wavy underline-offset-4">Pandit?</span>
+            {t("home.get_verified_pandit")}
           </h2>
           <p className="text-white/80 text-lg mb-10 max-w-xl mx-auto font-medium leading-relaxed">
-            Join PanditJi and reach thousands of devotees looking for experienced pandits in your city. Registration is completely free!
+            {t("home.get_verified_pandit_desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate("/register")} className="bg-white text-[#e8621a] font-black px-10 py-4 rounded-2xl hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <UserPlus size={18} /> Register as Pandit
+              <UserPlus size={18} /> {t("pandits.register_as_pandit")}
             </button>
             <button onClick={() => navigate("/contact")} className="bg-white/15 backdrop-blur-sm border-2 border-white/40 text-white font-black px-10 py-4 rounded-2xl hover:bg-white/25 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-              <Phone size={18} /> Contact Us
+              <Phone size={18} /> {t("navbar.contact")}
             </button>
           </div>
         </div>
@@ -901,11 +907,10 @@ const Home = () => {
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-black text-gray-800 leading-tight mb-5">
-                Book Your <span className="bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent">Pandit</span><br />
-                From Your Phone
+                {t("home.download_app_title")}
               </h2>
               <p className="text-gray-500 text-lg font-medium leading-relaxed mb-8 max-w-lg">
-                Download the PanditJi app and book verified pandits for Havan, Vivah, Griha Pravesh and more — in under 60 seconds, anytime, anywhere.
+                {t("home.download_app_desc")}
               </p>
 
               {/* Feature Pills */}
