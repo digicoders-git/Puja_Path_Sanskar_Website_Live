@@ -10,6 +10,31 @@ import { useTranslation } from "react-i18next"
 
 const inputCls = "w-full bg-white/70 backdrop-blur-sm border border-gray-200 rounded-lg px-4 py-3.5 text-sm outline-none focus:border-[#e8621a] focus:ring-4 focus:ring-[#e8621a]/10 transition-all text-gray-700 placeholder-gray-400 font-medium shadow-sm"
 const labelCls = "text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-2 block group-focus-within:text-[#e8621a] transition-colors"
+const RequiredStar = () => <span className="text-red-500 ml-1">*</span>
+
+const FilePreview = ({ file, type = "image", onRemove }) => {
+  if (!file) return null;
+  const url = URL.createObjectURL(file);
+  return (
+    <div className="relative mt-2 group w-full max-w-[200px]">
+      <div className="rounded-xl overflow-hidden border-2 border-[#e8621a]/20 shadow-lg bg-gray-50 aspect-video flex items-center justify-center">
+        {type === "image" ? (
+          <img src={url} alt="preview" className="w-full h-full object-cover" />
+        ) : (
+          <video src={url} className="w-full h-full object-cover" />
+        )}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+          <p className="text-white text-[10px] font-black uppercase tracking-widest">{type}</p>
+        </div>
+      </div>
+      <button 
+        type="button" 
+        onClick={onRemove}
+        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow-lg hover:bg-red-600 transition-colors z-10"
+      >✕</button>
+    </div>
+  );
+};
 
 const Register = () => {
   const [step, setStep] = useState(1)
@@ -81,7 +106,8 @@ const Register = () => {
         ['experience', '4. Experience'], ['idProof', '7. ID Proof'],
         ['profilePhoto', '8. Photo Upload'], ['serviceArea', '9. Service Area'],
         ['samagriArrangement', '10. Samagri Arrangement'],
-        ['samagriExperience', '12. Samagri Experience'], ['travelAvailability', '13. Travel Availability']
+        ['samagriExperience', '12. Samagri Experience'], ['travelAvailability', '13. Travel Availability'],
+        ['dob', 'Date of Birth'], ['gender', 'Gender']
       ]
       for (const [key, label] of points) {
         if (!formData[key]) { setStepError(`${label.toUpperCase()} is required.`); return false }
@@ -240,18 +266,20 @@ const Register = () => {
                   <div className="animate-in fade-in slide-in-from-right-4 duration-500">
                     <SectionHeader icon={FaUser} title={t("register.important_details")} step={1} />
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                      <div className="group"><label className={labelCls}>{t("register.points.name")}</label><input required name="fullName" value={formData.fullName} onChange={handleInputChange} className={inputCls} placeholder="Name" /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.mobile")}</label><input required name="mobileNumber" value={formData.mobileNumber} onChange={handleInputChange} className={inputCls} placeholder="10 Digit" /></div>
+                      <div className="group"><label className={labelCls}>{t("register.points.name")}<RequiredStar /></label><input required name="fullName" value={formData.fullName} onChange={handleInputChange} className={inputCls} placeholder="Name" /></div>
+                      <div className="group"><label className={labelCls}>{t("register.points.mobile")}<RequiredStar /></label><input required name="mobileNumber" value={formData.mobileNumber} onChange={handleInputChange} className={inputCls} placeholder="10 Digit" /></div>
                       <div className="group"><label className={labelCls}>{t("register.points.whatsapp")}</label><input name="whatsappNumber" value={formData.whatsappNumber} onChange={handleInputChange} className={inputCls} placeholder="Optional" /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.state")}</label><input required name="state" value={formData.state} onChange={handleInputChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.city")}</label><input required name="city" value={formData.city} onChange={handleInputChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.district")}</label><input required name="district" value={formData.district} onChange={handleInputChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.experience")}</label>
+                      <div className="group"><label className={labelCls}>{t("register.points.state")}<RequiredStar /></label><input required name="state" value={formData.state} onChange={handleInputChange} className={inputCls} /></div>
+                      <div className="group"><label className={labelCls}>{t("register.points.city")}<RequiredStar /></label><input required name="city" value={formData.city} onChange={handleInputChange} className={inputCls} /></div>
+                      <div className="group"><label className={labelCls}>{t("register.points.district")}<RequiredStar /></label><input required name="district" value={formData.district} onChange={handleInputChange} className={inputCls} /></div>
+                      <div className="group"><label className={labelCls}>{t("register.dob")}<RequiredStar /></label><input required name="dob" type="date" value={formData.dob} onChange={handleInputChange} className={inputCls} /></div>
+                      <div className="group"><label className={labelCls}>{t("register.gender")}<RequiredStar /></label><select required name="gender" value={formData.gender} onChange={handleInputChange} className={inputCls}><option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                      <div className="group"><label className={labelCls}>{t("register.points.experience")}<RequiredStar /></label>
                         <select required name="experience" value={formData.experience} onChange={handleInputChange} className={inputCls}>
                           <option value="">Select</option><option value="1–3 Years">1–3 Years</option><option value="3–7 Years">3–7 Years</option><option value="7+ Years">7+ Years</option>
                         </select>
                       </div>
-                      <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.specialization")}</label>
+                      <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.specialization")}<RequiredStar /></label>
                         <div className="flex flex-wrap gap-2">
                           {["Grih Pravesh", "Vivah", "Satyanarayan Katha", "Rudrabhishek", "Sunderkand", "Jagran", "Bhagwat Katha"].map(s => (
                             <button key={s} type="button" onClick={() => handleMultiSelect('specializations', s)}
@@ -259,7 +287,7 @@ const Register = () => {
                           ))}
                         </div>
                       </div>
-                      <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.languages")}</label>
+                      <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.languages")}<RequiredStar /></label>
                         <div className="flex flex-wrap gap-2">
                           {["Hindi", "Sanskrit", "English", "Others"].map(l => (
                             <button key={l} type="button" onClick={() => handleMultiSelect('languages', l)}
@@ -267,30 +295,38 @@ const Register = () => {
                           ))}
                         </div>
                       </div>
-                      <div className="group"><label className={labelCls}>{t("register.points.id_proof")}</label><input type="file" required name="idProof" onChange={handleFileChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.photo")}</label><input type="file" required name="profilePhoto" onChange={handleFileChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.service_area")}</label>
+                      <div className="group">
+                        <label className={labelCls}>{t("register.points.id_proof")}<RequiredStar /></label>
+                        <input type="file" required name="idProof" onChange={handleFileChange} className={inputCls} accept="image/*" />
+                        <FilePreview file={formData.idProof} onRemove={() => setFormData(prev => ({ ...prev, idProof: null }))} />
+                      </div>
+                      <div className="group">
+                        <label className={labelCls}>{t("register.points.photo")}<RequiredStar /></label>
+                        <input type="file" required name="profilePhoto" onChange={handleFileChange} className={inputCls} accept="image/*" />
+                        <FilePreview file={formData.profilePhoto} onRemove={() => setFormData(prev => ({ ...prev, profilePhoto: null }))} />
+                      </div>
+                      <div className="group"><label className={labelCls}>{t("register.points.service_area")}<RequiredStar /></label>
                         <select required name="serviceArea" value={formData.serviceArea} onChange={handleInputChange} className={inputCls}>
                           <option value="">Select</option><option value="Within 10 km">Within 10 km</option><option value="Entire City">Entire City</option><option value="Nearby Districts">Nearby Districts</option>
                         </select>
                       </div>
-                      <div className="group"><label className={labelCls}>{t("register.points.samagri")}</label>
+                      <div className="group"><label className={labelCls}>{t("register.points.samagri")}<RequiredStar /></label>
                         <select required name="samagriArrangement" value={formData.samagriArrangement} onChange={handleInputChange} className={inputCls}>
                           <option value="">Select Option</option><option value="Yes">Yes</option><option value="No">No</option>
                         </select>
                       </div>
                       <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.bank_upi")}</label><input name="bankUpiDetails" value={formData.bankUpiDetails} onChange={handleInputChange} className={inputCls} placeholder="UPI ID" /></div>
-                      <div className="group"><label className={labelCls}>{t("register.points.puja_kit")}</label>
+                      <div className="group"><label className={labelCls}>{t("register.points.puja_kit")}<RequiredStar /></label>
                         <select required name="samagriExperience" value={formData.samagriExperience} onChange={handleInputChange} className={inputCls}>
                           <option value="">Select Option</option><option value="Basic Setup">Basic Setup</option><option value="Full Setup">Full Setup</option><option value="No">No</option>
                         </select>
                       </div>
-                      <div className="group"><label className={labelCls}>{t("register.points.travel")}</label>
+                      <div className="group"><label className={labelCls}>{t("register.points.travel")}<RequiredStar /></label>
                         <select required name="travelAvailability" value={formData.travelAvailability} onChange={handleInputChange} className={inputCls}>
                           <option value="">Select Option</option><option value="Only Local Area">Only Local Area</option><option value="Entire District">Entire District</option><option value="Other States Also">Other States Also</option>
                         </select>
                       </div>
-                      <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.live_event")}</label>
+                      <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.live_event")}<RequiredStar /></label>
                         <div className="flex flex-wrap gap-2">
                           {["Jagran", "Bhagwat Katha", "Corporate Puja", "Mandir Event"].map(e => (
                              <button key={e} type="button" onClick={() => handleMultiSelect('liveEventExperience', e)}
@@ -316,9 +352,40 @@ const Register = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                      <div className="group"><label className={labelCls}>{t("register.intro_video")}</label><p className="text-[9px] text-gray-400 mb-2">{t("register.intro_desc")}</p><input type="file" name="introVideo" onChange={handleFileChange} className={inputCls} accept="video/*" /></div>
-                      <div className="group"><label className={labelCls}>{t("register.puja_photos")}</label><p className="text-[9px] text-gray-400 mb-2">{t("register.photos_desc")}</p><input type="file" multiple name="pujaPhotos" onChange={handleFileChange} className={inputCls} accept="image/*" /></div>
-                      <div className="group"><label className={labelCls}>{t("register.puja_videos")}</label><p className="text-[9px] text-gray-400 mb-2">{t("register.videos_desc")}</p><input type="file" multiple name="pujaVideoClips" onChange={handleFileChange} className={inputCls} accept="video/*" /></div>
+                      <div className="group">
+                        <label className={labelCls}>{t("register.intro_video")}</label>
+                        <p className="text-[9px] text-gray-400 mb-2">{t("register.intro_desc")}</p>
+                        <input type="file" name="introVideo" onChange={handleFileChange} className={inputCls} accept="video/*" />
+                        <FilePreview file={formData.introVideo} type="video" onRemove={() => setFormData(prev => ({ ...prev, introVideo: null }))} />
+                      </div>
+                      <div className="group">
+                        <label className={labelCls}>{t("register.puja_photos")}</label>
+                        <p className="text-[9px] text-gray-400 mb-2">{t("register.photos_desc")}</p>
+                        <input type="file" multiple name="pujaPhotos" onChange={handleFileChange} className={inputCls} accept="image/*" />
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {formData.pujaPhotos.map((f, i) => (
+                            <div key={i} className="w-20 h-20 relative group">
+                              <img src={URL.createObjectURL(f)} className="w-full h-full object-cover rounded-lg border border-orange-100" />
+                              <button type="button" onClick={() => setFormData(prev => ({ ...prev, pujaPhotos: prev.pujaPhotos.filter((_, idx) => idx !== i) }))}
+                                className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-[8px]">✕</button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="group">
+                        <label className={labelCls}>{t("register.puja_videos")}</label>
+                        <p className="text-[9px] text-gray-400 mb-2">{t("register.videos_desc")}</p>
+                        <input type="file" multiple name="pujaVideoClips" onChange={handleFileChange} className={inputCls} accept="video/*" />
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {formData.pujaVideoClips.map((f, i) => (
+                            <div key={i} className="w-20 h-20 relative group bg-black rounded-lg flex items-center justify-center">
+                              <video src={URL.createObjectURL(f)} className="w-full h-full object-cover rounded-lg" />
+                              <button type="button" onClick={() => setFormData(prev => ({ ...prev, pujaVideoClips: prev.pujaVideoClips.filter((_, idx) => idx !== i) }))}
+                                className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-[8px]">✕</button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                       
                       <div className="group"><label className={labelCls}>{t("register.traditional_dress")}</label>
                         <select name="traditionalDress" value={formData.traditionalDress} onChange={handleInputChange} className={inputCls}>
@@ -347,13 +414,11 @@ const Register = () => {
                       
                       <div className="group"><label className={labelCls}>{t("register.alt_number")}</label><input name="alternateNumber" value={formData.alternateNumber} onChange={handleInputChange} className={inputCls} /></div>
                       <div className="group"><label className={labelCls}>{t("register.email")}</label><input name="emailId" type="email" value={formData.emailId} onChange={handleInputChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.dob")}</label><input name="dob" type="date" value={formData.dob} onChange={handleInputChange} className={inputCls} /></div>
-                      <div className="group"><label className={labelCls}>{t("register.gender")}</label><select name="gender" value={formData.gender} onChange={handleInputChange} className={inputCls}><option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
                       
                       <div className="md:col-span-2 group">
                         <label className="flex items-start gap-3 cursor-pointer">
                           <input type="checkbox" name="declaration" checked={formData.declaration} onChange={handleInputChange} className="mt-1 w-5 h-5 rounded border-gray-300 text-[#e8621a]" />
-                          <span className="text-xs text-gray-600 font-medium leading-relaxed">{t("register.declaration_text")}</span>
+                          <span className="text-xs text-gray-600 font-medium leading-relaxed">{t("register.declaration_text")}<RequiredStar /></span>
                         </label>
                       </div>
                     </div>

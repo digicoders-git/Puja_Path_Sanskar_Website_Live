@@ -357,18 +357,25 @@ const Pujas = () => {
             {t("pujas.hero_desc")}
           </p>
 
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center mb-10">
             {[
               { label: t("pujas.puja_types"), val: "50+" },
               { label: t("navbar.pandits"), val: "5000+" },
               { label: t("home.pujas_completed"), val: "1 Lakh+" },
-              { label: t("navbar.city"), val: "50+" },
+              { label: t("pujas.major_regions"), val: "U.P, M.P, Gujrat, NCR+" },
             ].map(s => (
-              <div key={s.label} className="bg-white border border-orange-100 rounded-2xl px-6 py-3 shadow-sm hover:shadow-md transition-shadow">
+              <div key={s.label} className="bg-white/80 backdrop-blur-sm border border-orange-100 rounded-2xl px-6 py-4 shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
                 <span className="font-black text-xl block leading-tight text-gray-800">{s.val}</span>
-                <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">{s.label}</span>
+                <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">{s.label}</span>
               </div>
             ))}
+          </div>
+
+          <div className="inline-flex items-center gap-3 bg-white/60 backdrop-blur-md border border-orange-100 rounded-full px-6 py-2.5 shadow-sm">
+            <div className="w-2 h-2 rounded-full bg-[#e8621a] animate-ping"></div>
+            <p className="text-[11px] font-black text-gray-600 uppercase tracking-[0.2em]">
+              Now Serving: <span className="text-[#e8621a]">{t("pujas.metro_cities")}</span> & 50+ Cities across India
+            </p>
           </div>
         </div>
       </section>

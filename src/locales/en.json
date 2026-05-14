@@ -127,7 +127,9 @@
     "performed_desc": "A typical puja ceremony follows these sacred steps",
     "cant_find_puja": "Can't find your Puja?",
     "cant_find_desc": "Contact our specialized team and we'll connect you with the right expert for any specific ceremony or ritual.",
-    "contact_support": "Contact Support Now"
+    "contact_support": "Contact Support Now",
+    "major_regions": "U.P, M.P, Gujrat, NCR+",
+    "metro_cities": "Metro Cities"
   },
   "interest_modal": {
     "puja_enquiry": "Puja Enquiry",
