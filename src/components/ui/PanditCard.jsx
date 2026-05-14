@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { FiMapPin, FiPlay, FiVideo } from "react-icons/fi"
+import { FiMapPin, FiPlay, FiVideo, FiShield } from "react-icons/fi"
 import { useTranslation } from "react-i18next"
 import { FaStar, FaGraduationCap } from "react-icons/fa"
 import AppDownloadModal from "./AppDownloadModal"
@@ -140,8 +140,9 @@ const PanditCard = ({ pandit }) => {
                  </div>
               </div>
 
+
               {/* Gallery */}
-              {(pandit.pujaPhotos?.length > 0 || pandit.pujaVideos?.length > 0) && (
+              {(pandit.pujaPhotos?.length > 0 || pandit.pujaVideoClips?.length > 0) && (
                 <div className="space-y-3">
                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Recent Ceremonies</p>
                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
@@ -150,7 +151,7 @@ const PanditCard = ({ pandit }) => {
                            <img src={`${BACKEND_URL}/${img.replace(/\\/g, "/")}`} className="w-full h-full object-cover" />
                         </div>
                       ))}
-                      {pandit.pujaVideos?.map((vid, i) => (
+                      {pandit.pujaVideoClips?.map((vid, i) => (
                         <div key={i} className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shrink-0 relative cursor-pointer" onClick={() => { setActiveVid(`${BACKEND_URL}/${vid.replace(/\\/g, "/")}`); setShowVideo(true); }}>
                            <video src={`${BACKEND_URL}/${vid.replace(/\\/g, "/")}`} className="w-full h-full object-cover" />
                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
