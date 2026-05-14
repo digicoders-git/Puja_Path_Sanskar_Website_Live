@@ -109,7 +109,7 @@ const Home = () => {
 
   const stats = [
     { value: "5000+", label: t("home.verified_pandits"), icon: <ShieldCheck size={28} /> },
-    { value: "50+", label: t("home.cities_50"), icon: <MapPin size={28} /> },
+    { value: "U.P, M.P, Gujrat", label: "NCR & Metro Cities", icon: <MapPin size={28} /> },
     { value: "1 Lakh+", label: t("home.secure_booking"), icon: <TrendingUp size={28} /> },
     { value: "4.8", label: t("home.avg_rating"), icon: <Trophy size={28} /> },
   ]
@@ -192,7 +192,7 @@ const Home = () => {
     <div className="bg-gray-50 min-h-screen w-full overflow-x-hidden ">
 
       {/* Hero */}
-      <section className="relative z-30 min-h-screen flex flex-col items-center justify-center bg-[#fffcf9] pt-20 md:pt-24 overflow-hidden">
+      <section className="relative z-30 min-h-screen flex flex-col items-center justify-center bg-[#fffcf9] pt-32 md:pt-32 overflow-hidden">
         {/* Logo and Rotating Rings Container */}
         <div className="relative flex items-center justify-center mb-12 sm:mb-20">
           <div className="relative w-64 h-64 sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] flex items-center justify-center">
@@ -249,7 +249,7 @@ const Home = () => {
               <div className="grid grid-cols-2 sm:flex sm:flex-row sm:justify-center sm:items-center sm:gap-x-10 gap-x-4 gap-y-3">
                 {[
                   t("home.verified_pandits"),
-                  t("home.cities_50"),
+                  t("pujas.major_regions"),
                   t("home.secure_booking"),
                   t("home.avg_rating")
                 ].map((item, i) => (
@@ -516,8 +516,8 @@ const Home = () => {
               </div>
               <div className="w-px h-8 bg-gray-200"></div>
               <div className="text-center">
-                <p className="text-2xl font-black text-gray-800 leading-none">50+</p>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">{t("navbar.city")}</p>
+                <p className="text-xl font-black bg-gradient-to-r from-[#e8621a] to-[#f5a020] bg-clip-text text-transparent leading-none">U.P, M.P, Gujrat</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">NCR & Metro Cities</p>
               </div>
             </div>
           </div>
