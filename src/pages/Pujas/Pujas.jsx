@@ -307,24 +307,38 @@ const Pujas = () => {
   const navigate = useNavigate()
   const [activeVideo, setActiveVideo] = useState(null)
   const [pujas, setPujas] = useState([])
+  const [pujaTypes, setPujaTypes] = useState([])
+  const [selectedType, setSelectedType] = useState("All Categories")
   const [pujaLoading, setPujaLoading] = useState(true)
   const [pujaError, setPujaError] = useState("")
   const { t } = useTranslation()
 
   useEffect(() => {
-    const fetchPujas = async () => {
+    const fetchData = async () => {
       try {
-        const res = await api.get("/pujas")
-        const data = res.data
-        setPujas(Array.isArray(data) ? data : data?.pujas || data?.data || [])
+        const [pujaRes, typeRes] = await Promise.all([
+          api.get("/pujas"),
+          api.get("/puja-types")
+        ])
+        
+        const pData = pujaRes.data
+        setPujas(Array.isArray(pData) ? pData : pData?.pujas || pData?.data || [])
+        
+        const tData = typeRes.data
+        setPujaTypes(Array.isArray(tData) ? tData : [])
       } catch (err) {
-        setPujaError(t("pujas.error_loading", { defaultValue: "Failed to load pujas. Please refresh." }))
+        setPujaError(t("pujas.error_loading", { defaultValue: "Failed to load data. Please refresh." }))
       } finally {
         setPujaLoading(false)
       }
     }
-    fetchPujas()
+    fetchData()
   }, [])
+
+  const filteredPujas = pujas.filter(p => {
+    if (selectedType === "All Categories" || selectedType === t("pujas.all_categories")) return true
+    return p.pujaType === selectedType
+  })
 
   return (
     <div className="bg-[#fffcf9] min-h-screen w-full overflow-x-hidden pt-20">
@@ -426,12 +440,15 @@ const Pujas = () => {
           </div>
           <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-sm">
             <span className="text-xs font-black text-gray-400 uppercase tracking-wider">Sort:</span>
-            <select className="bg-transparent border-none text-sm text-gray-700 font-bold outline-none cursor-pointer">
-              <option>{t("pujas.all_categories")}</option>
-              <option>{t("pujas.wedding_rituals")}</option>
-              <option>{t("pujas.home_ceremonies")}</option>
-              <option>{t("pujas.festival_pujas")}</option>
-              <option>{t("pujas.ancestral_rites")}</option>
+            <select 
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="bg-transparent border-none text-sm text-gray-700 font-bold outline-none cursor-pointer"
+            >
+              <option value="All Categories">{t("pujas.all_categories")}</option>
+              {pujaTypes.map((type) => (
+                <option key={type._id} value={type.name}>{type.name}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -455,12 +472,12 @@ const Pujas = () => {
                 {t("common.retry")}
               </button>
             </div>
-          ) : pujas.length === 0 ? (
+          ) : filteredPujas.length === 0 ? (
             <div className="col-span-3 text-center py-20">
-              <p className="text-gray-400 font-medium text-lg">Koi puja available nahi hai abhi.</p>
+              <p className="text-gray-400 font-medium text-lg">No pujas found for this category.</p>
             </div>
           ) : (
-            pujas.map((puja) => <PujaCard key={puja._id} puja={puja} />)
+            filteredPujas.map((puja) => <PujaCard key={puja._id} puja={puja} />)
           )}
         </div>
       </section>
