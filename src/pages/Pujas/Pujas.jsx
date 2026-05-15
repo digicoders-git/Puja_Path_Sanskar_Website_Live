@@ -302,7 +302,6 @@ const PujaCard = ({ puja }) => {
     </>
   )
 }
-
 const Pujas = () => {
   const navigate = useNavigate()
   const [activeVideo, setActiveVideo] = useState(null)
@@ -399,7 +398,7 @@ const Pujas = () => {
         <div className="absolute inset-0 bg-[#e8621a]/5 pointer-events-none" style={{ backgroundImage: 'linear-gradient(45deg, rgba(242,141,88,0.05) 25%, transparent 25%, transparent 75%, rgba(242,141,88,0.05) 75%, rgba(242,141,88,0.05)), linear-gradient(45deg, rgba(242,141,88,0.05) 25%, transparent 25%, transparent 75%, rgba(242,141,88,0.05) 75%, rgba(242,141,88,0.05))', backgroundSize: '20px 20px', backgroundPosition: '0 0, 10px 10px' }}></div>
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex items-center gap-2 mb-6">
-            <Video size={20} className="text-[#e8621a]" />
+            <Video size={20} className="text-[#e8621a]"/>
             <h2 className="text-2xl font-black text-gray-800 tracking-tight">{t("pujas.watch_real")} <span className="text-[#e8621a]">{t("pujas.pujas")}</span></h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -427,7 +426,7 @@ const Pujas = () => {
         </div>
       </section>
 
-      {/* ─── Grid Section ─── */}
+      {/* ───------------ Grid Section ------------─── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
           <div>
@@ -502,7 +501,7 @@ const Pujas = () => {
               { step: "03", title: "Kalash Sthapana", desc: "Setting up the sacred water pot" },
               { step: "04", title: "Main Puja", desc: "Performing the main deity worship with mantras" },
               { step: "05", title: "Havan", desc: "Sacred fire ritual with holy offerings" },
-              { step: "06", title: "Aarti & Prasad", desc: "Concluding with aarti and prasad distribution" },
+              { step: "06", title: "Aarti & Prasad", desc: "Concluding with aarti and prasad distributions" },
             ].map((item) => (
               <div key={item.step} className="group bg-white rounded-2xl p-6 text-center shadow-sm border border-transparent hover:border-[#e8621a]/20 hover:shadow-lg transition-all duration-300">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#e8621a]/10 to-[#f5a020]/10 text-[#e8621a] flex items-center justify-center text-lg font-black mx-auto mb-4 group-hover:scale-110 transition-transform">
@@ -546,4 +545,4 @@ const Pujas = () => {
   )
 }
 
-export default Pujas
+export default Pujas;
