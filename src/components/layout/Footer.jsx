@@ -43,18 +43,21 @@ const Footer = () => {
           {/* Social Icons */}
           <div className="flex gap-2.5 mt-1">
             {[
-              { icon: <FaFacebookF size={14} />, label: "Facebook", hoverBg: "#1877F2" },
-              { icon: <FaInstagram size={14} />, label: "Instagram", hoverBg: "#E4405F" },
-              { icon: <FaYoutube size={14} />, label: "YouTube", hoverBg: "#FF0000" },
-              { icon: <FaWhatsapp size={14} />, label: "WhatsApp", hoverBg: "#25D366" },
+              { icon: <FaFacebookF size={14} />, label: "Facebook", href: "https://www.facebook.com/share/18k71rUjdx/", hoverBg: "#1877F2"},
+              { icon: <FaInstagram size={14} />, label: "Instagram", href: "https://www.instagram.com/pujapathsanskar?igsh=dGo1eHFhNXQ3NWM4", hoverBg: "#E4405F"},
+              { icon: <FaYoutube size={14} />, label: "YouTube", href: "#", hoverBg: "#FF0000"},
+              { icon: <FaWhatsapp size={14} />, label: "WhatsApp", href: "https://wa.me/918433344459", hoverBg: "#25D366"},
             ].map((s) => (
-              <button
+              <a
                 key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 title={s.label}
                 className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-[#e8621a]/60 hover:text-white hover:bg-[#e8621a] hover:border-[#e8621a] transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-[#e8621a]/20"
               >
                 {s.icon}
-              </button>
+              </a>
             ))}
           </div>
 

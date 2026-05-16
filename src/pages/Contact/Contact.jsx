@@ -71,14 +71,14 @@ const Contact = () => {
               <p className="font-black text-gray-800 text-sm mb-4">{t("contact.follow_journey")}</p>
               <div className="flex gap-3">
                 {[
-                  { label: "Facebook", color: "bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white", icon: <FaFacebookF size={16} /> },
-                  { label: "Instagram", color: "bg-[#E4405F]/10 text-[#E4405F] hover:bg-[#E4405F] hover:text-white", icon: <FaInstagram size={16} /> },
-                  { label: "YouTube", color: "bg-[#FF0000]/10 text-[#FF0000] hover:bg-[#FF0000] hover:text-white", icon: <FaYoutube size={16} /> },
-                  { label: "WhatsApp", color: "bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white", icon: <FaWhatsapp size={16} /> },
+                  { label: "Facebook", href: "https://www.facebook.com/share/18k71rUjdx/", color: "bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white", icon: <FaFacebookF size={16} /> },
+                  { label: "Instagram", href: "https://www.instagram.com/pujapathsanskar/", color: "bg-[#E4405F]/10 text-[#E4405F] hover:bg-[#E4405F] hover:text-white", icon: <FaInstagram size={16} /> },
+                  { label: "YouTube", href: "#", color: "bg-[#FF0000]/10 text-[#FF0000] hover:bg-[#FF0000] hover:text-white", icon: <FaYoutube size={16} /> },
+                  { label: "WhatsApp", href: "https://wa.me/918433344459", color: "bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white", icon: <FaWhatsapp size={16} /> },
                 ].map((s) => (
-                  <button key={s.label} title={s.label} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${s.color}`}>
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" title={s.label} className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${s.color}`}>
                     {s.icon}
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
