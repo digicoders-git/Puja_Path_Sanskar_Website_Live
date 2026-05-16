@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useState, useEffect } from "react"
-import { FiClock, FiUsers, FiChevronDown, FiX, FiCheck, FiPlay } from "react-icons/fi"
+import { FiClock, FiUsers, FiChevronDown, FiX, FiCheck } from "react-icons/fi"
 import { FaCheckCircle } from "react-icons/fa"
 import {
-  Home, Flame, Moon, GraduationCap,
-  Star, Mountain, Heart, Sparkles, Sun, Baby, ShieldCheck, Zap, Video, Loader2
+  
+  Sparkles, ShieldCheck, Zap, Video, Loader2
 } from "lucide-react"
 import VideoModal, { VideoThumbnail } from "../../components/ui/VideoModal"
 import api from "../../api/axiosInstance"
@@ -12,7 +12,9 @@ import { useTranslation } from "react-i18next"
 
 import AppDownloadModal from "../../components/ui/AppDownloadModal"
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
+const BACKEND_URL = import.meta.env.PROD 
+  ? "https://puja-path-sanskar-backend-live.onrender.com" 
+  : import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
 
 const InterestModal = ({ puja, onClose }) => {
   const [form, setForm] = useState({ name: "", mobile: "", message: "" })
@@ -192,7 +194,7 @@ const PujaCard = ({ puja }) => {
     ? puja.whatIsIncluded.split(",").map(s => s.trim()).filter(Boolean)
     : []
 
-  const imageUrl = puja.image ? `${BACKEND_URL}/${puja.image}` : null
+  const imageUrl = puja.image ? `${BACKEND_URL}/${puja.image.replace(/\\/g, "/")}` : null
 
   return (
     <>
@@ -304,9 +306,14 @@ const PujaCard = ({ puja }) => {
 }
 const Pujas = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [activeVideo, setActiveVideo] = useState(null)
   const [pujas, setPujas] = useState([])
   const [pujaTypes, setPujaTypes] = useState([])
+  
+  const queryParams = new URLSearchParams(location.search)
+  const urlSearchQuery = queryParams.get("search") || ""
+  
   const [selectedType, setSelectedType] = useState("All Categories")
   const [pujaLoading, setPujaLoading] = useState(true)
   const [pujaError, setPujaError] = useState("")
@@ -335,8 +342,15 @@ const Pujas = () => {
   }, [])
 
   const filteredPujas = pujas.filter(p => {
-    if (selectedType === "All Categories" || selectedType === t("pujas.all_categories")) return true
-    return p.pujaType === selectedType
+    if (selectedType !== "All Categories" && selectedType !== t("pujas.all_categories")) {
+      if (p.pujaType !== selectedType) return false
+    }
+    if (urlSearchQuery) {
+      const q = urlSearchQuery.toLowerCase().trim()
+      const fields = [p.pujaName, p.pujaType, p.description, p.whatIsIncluded].join(" ").toLowerCase()
+      if (!q.split(/\\s+/).every(word => fields.includes(word))) return false
+    }
+    return true
   })
 
   return (
@@ -474,6 +488,14 @@ const Pujas = () => {
           ) : filteredPujas.length === 0 ? (
             <div className="col-span-3 text-center py-20">
               <p className="text-gray-400 font-medium text-lg">No pujas found for this category.</p>
+              {urlSearchQuery && (
+                <button
+                  onClick={() => navigate("/pujas", { replace: true })}
+                  className="mt-4 bg-gradient-to-r from-[#e8621a] to-[#f5a020] text-white font-bold px-6 py-2.5 rounded-xl text-sm hover:shadow-lg transition-all"
+                >
+                  Clear Search
+                </button>
+              )}
             </div>
           ) : (
             filteredPujas.map((puja) => <PujaCard key={puja._id} puja={puja} />)

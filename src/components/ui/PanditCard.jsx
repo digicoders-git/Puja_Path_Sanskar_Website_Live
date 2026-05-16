@@ -5,7 +5,9 @@ import { FaStar, FaGraduationCap } from "react-icons/fa"
 import AppDownloadModal from "./AppDownloadModal"
 import VideoModal from "./VideoModal"
 
-const BACKEND_URL = import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
+const BACKEND_URL = import.meta.env.PROD 
+  ? "https://puja-path-sanskar-backend-live.onrender.com" 
+  : import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
 
 const PanditCard = ({ pandit }) => {
   const [showBooking, setShowBooking] = useState(false)

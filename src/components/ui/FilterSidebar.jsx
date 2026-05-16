@@ -19,14 +19,7 @@ const FilterSidebar = ({ onApply }) => {
 
   const { inputRef, place, suggestions, showDropdown, handleInput, selectSuggestion, clearPlace, closeDropdown } = useGooglePlacesAutocomplete()
 
-  useEffect(() => {
-    if (place.address) {
-      setCity(place.address)
-      if (onApply) {
-        onApply({ city: place.address, specializations: selectedSpecs, experience })
-      }
-    }
-  }, [place, selectedSpecs, experience, onApply])
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {

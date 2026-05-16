@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { FiMenu, FiX, FiUserPlus, FiHome, FiUsers, FiBook, FiPhone, FiArrowRight } from "react-icons/fi"
-import { MapPin, Search, X, ChevronDown } from "lucide-react"
+import { MapPin, Search, X, ChevronDown, Sparkles } from "lucide-react"
 import { useLogin } from "../../context/LoginContext"
 import { useGooglePlacesAutocomplete } from "../../hooks/useGooglePlacesAutocomplete"
+import api from "../../api/axiosInstance"
 import logoImg from "../../assets/img.jpeg"
 
 const Navbar = ({ navRef }) => {
@@ -14,11 +15,16 @@ const Navbar = ({ navRef }) => {
   const navigate = useNavigate()
   const cityWrapperRef = useRef(null)
   const mobileCityWrapperRef = useRef(null)
+  const searchWrapperRef = useRef(null)
+  const mobileSearchWrapperRef = useRef(null)
 
   const [searchQuery, setSearchQuery] = useState("")
   const [searchCity, setSearchCity] = useState("")
   const [cityInputValue, setCityInputValue] = useState("")
   const [mobileCityInputValue, setMobileCityInputValue] = useState("")
+  const [searchResults, setSearchResults] = useState({ pujas: [], pandits: [] })
+  const [isSearching, setIsSearching] = useState(false)
+  const [showSearchResults, setShowSearchResults] = useState(false)
 
   const {
     inputRef: desktopCityRef,
@@ -53,10 +59,59 @@ const Navbar = ({ navRef }) => {
     const handler = (e) => {
       if (cityWrapperRef.current && !cityWrapperRef.current.contains(e.target)) closeDropdown()
       if (mobileCityWrapperRef.current && !mobileCityWrapperRef.current.contains(e.target)) mobileCloseDropdown()
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(e.target)) setShowSearchResults(false)
+      if (mobileSearchWrapperRef.current && !mobileSearchWrapperRef.current.contains(e.target)) setShowSearchResults(false)
     }
     document.addEventListener("mousedown", handler)
     return () => document.removeEventListener("mousedown", handler)
   }, [])
+  
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults({ pujas: [], pandits: [] })
+      setShowSearchResults(false)
+      return
+    }
+
+    const fetchSearchResults = async () => {
+      setIsSearching(true)
+      try {
+        const [pujaRes, panditRes] = await Promise.all([
+          api.get("/pujas"),
+          api.get("/pandits/search", { params: { city: searchCity && searchCity !== "All Cities" ? searchCity : undefined } })
+        ])
+        
+        const pData = pujaRes.data
+        const allPujas = Array.isArray(pData) ? pData : pData?.pujas || pData?.data || []
+        
+        const q = searchQuery.toLowerCase().trim()
+        const matchedPujas = allPujas.filter(p => {
+          const fields = [p.pujaName, p.pujaType, p.description, p.whatIsIncluded].join(" ").toLowerCase()
+          return q.split(/\\s+/).every(word => fields.includes(word))
+        }).slice(0, 5)
+
+        const panData = panditRes.data
+        const allPandits = Array.isArray(panData) ? panData : panData?.pandits || panData?.data || []
+        const matchedPandits = allPandits.filter(p => {
+          const fields = [
+            p.fullName, p.specialization, p.city, p.availableCities,
+            p.trainingGurukul, p.languagesKnown, p.vedaSpecialization
+          ].join(" ").toLowerCase()
+          return q.split(/\\s+/).every(word => fields.includes(word))
+        }).slice(0, 5)
+
+        setSearchResults({ pujas: matchedPujas, pandits: matchedPandits })
+        setShowSearchResults(true)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setIsSearching(false)
+      }
+    }
+
+    const timer = setTimeout(fetchSearchResults, 300)
+    return () => clearTimeout(timer)
+  }, [searchQuery, searchCity])
 
   useEffect(() => {
     if (desktopPlace.address) {
@@ -74,11 +129,37 @@ const Navbar = ({ navRef }) => {
 
   const handleSearch = (e) => {
     e.preventDefault()
+    
     const params = new URLSearchParams()
-    if (searchQuery) params.set("search", searchQuery)
-    if (searchCity) params.set("city", searchCity)
-    navigate(`/pandits?${params.toString()}`)
+    if (searchQuery.trim()) params.set("search", searchQuery.trim())
+    if (searchCity && searchCity !== "All Cities") params.set("city", searchCity)
+
+    if (!searchQuery.trim()) {
+       if (location.pathname === "/pujas") {
+          navigate(`/pujas?${params.toString()}`)
+       } else if (location.pathname === "/pandits") {
+          navigate(`/pandits?${params.toString()}`)
+       } else {
+          navigate(`/pandits?${params.toString()}`)
+       }
+       setMenuOpen(false)
+       setShowSearchResults(false)
+       return
+    }
+
+    if (searchResults.pujas.length > 0 && searchResults.pandits.length === 0) {
+       navigate(`/pujas?${params.toString()}`)
+    } else if (searchResults.pandits.length > 0 && searchResults.pujas.length === 0) {
+       navigate(`/pandits?${params.toString()}`)
+    } else {
+       if (location.pathname === "/pujas") {
+          navigate(`/pujas?${params.toString()}`)
+       } else {
+          navigate(`/pandits?${params.toString()}`)
+       }
+    }
     setMenuOpen(false)
+    setShowSearchResults(false)
   }
 
   const handleClearCity = () => {
@@ -201,18 +282,75 @@ const Navbar = ({ navRef }) => {
             </div>
 
             {/* Search Input */}
-            <form onSubmit={handleSearch} className="flex-1 flex items-center h-full">
-              <input
-                type="text"
-                placeholder="Search Pandit or Puja..."
-                className="w-full h-full bg-transparent outline-none px-3 text-xs font-medium text-gray-700 placeholder-gray-400"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <button type="submit" className="h-full px-3 text-gray-400 hover:text-[#e8621a] transition-colors">
-                <Search size={18} />
-              </button>
-            </form>
+            <div className="flex-1 flex items-center h-full relative" ref={searchWrapperRef}>
+              <form onSubmit={handleSearch} className="flex-1 flex items-center h-full w-full relative">
+                <input
+                  type="text"
+                  placeholder="Search Pandit or Puja..."
+                  className="w-full h-full bg-transparent outline-none px-3 pr-16 text-xs font-medium text-gray-700 placeholder-gray-400"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => { if(searchQuery.trim()) setShowSearchResults(true) }}
+                />
+                {searchQuery && (
+                  <button type="button" onClick={() => { setSearchQuery(""); setShowSearchResults(false); }} className="absolute right-10 text-gray-400 hover:text-[#e8621a] transition-colors">
+                    <X size={14} />
+                  </button>
+                )}
+                <button type="submit" className="absolute right-0 h-full px-3 text-gray-400 hover:text-[#e8621a] transition-colors">
+                  <Search size={18} />
+                </button>
+              </form>
+
+              {/* Search Dropdown */}
+              {showSearchResults && (searchQuery.trim() !== "") && (
+                <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-xl shadow-[0_10px_40px_rgba(242,141,88,0.18)] border border-orange-100 py-3 z-[9999] max-h-[400px] overflow-y-auto">
+                  {isSearching ? (
+                    <div className="px-4 py-3 text-xs text-gray-500 font-medium flex items-center gap-2">
+                       <span className="w-3 h-3 rounded-full border-2 border-[#e8621a]/30 border-t-[#e8621a] animate-spin"></span>
+                       Searching...
+                    </div>
+                  ) : (searchResults.pujas.length === 0 && searchResults.pandits.length === 0) ? (
+                    <div className="px-4 py-3 text-xs text-gray-500 font-medium">No results found for "{searchQuery}"</div>
+                  ) : (
+                    <>
+                      {searchResults.pujas.length > 0 && (
+                        <div className="mb-2">
+                           <p className="px-4 py-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50">Pujas</p>
+                           {searchResults.pujas.map(p => (
+                             <Link key={p._id} to={`/pujas?search=${encodeURIComponent(p.pujaName)}${searchCity && searchCity !== "All Cities" ? `&city=${encodeURIComponent(searchCity)}` : ''}`} onClick={() => { setShowSearchResults(false); setMenuOpen(false); }} className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors group/item">
+                               <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center shrink-0 text-[#e8621a]">
+                                 <Sparkles size={14} />
+                               </div>
+                               <div className="min-w-0 flex-1">
+                                 <p className="text-xs font-bold text-gray-700 group-hover/item:text-[#e8621a] transition-colors truncate">{p.pujaName}</p>
+                                 <p className="text-[10px] text-gray-400 font-medium truncate">{p.pujaType}</p>
+                               </div>
+                             </Link>
+                           ))}
+                        </div>
+                      )}
+                      {searchResults.pandits.length > 0 && (
+                        <div>
+                           <p className="px-4 py-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50">Pandits</p>
+                           {searchResults.pandits.map(p => (
+                             <Link key={p._id} to={`/pandits?search=${encodeURIComponent(p.fullName)}${searchCity && searchCity !== "All Cities" ? `&city=${encodeURIComponent(searchCity)}` : ''}`} onClick={() => { setShowSearchResults(false); setMenuOpen(false); }} className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors group/item">
+                               <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 overflow-hidden">
+                                  {p.profileImage ? <img src={`${import.meta.env.PROD ? "https://puja-path-sanskar-backend-live.onrender.com" : (import.meta.env.VITE_API_BASE_URL?.replace('/api','') || "")}/${p.profileImage.replace(/\\/g, "/")}`} className="w-full h-full object-cover" /> : <FiUsers size={14} />}
+                               </div>
+                               <div className="min-w-0 flex-1">
+                                 <p className="text-xs font-bold text-gray-700 group-hover/item:text-[#e8621a] transition-colors truncate">{p.fullName}</p>
+                                 <p className="text-[10px] text-gray-400 font-medium truncate">{p.city || "All Cities"}</p>
+                               </div>
+                             </Link>
+                           ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-semibold shrink-0">
@@ -280,18 +418,73 @@ const Navbar = ({ navRef }) => {
                 )}
               </div>
 
-              <div className="relative h-11">
+              <div className="relative h-11" ref={mobileSearchWrapperRef}>
                 <input
                   type="text"
                   placeholder="Search Pandit or Puja..."
-                  className="w-full h-full bg-gray-50 border border-gray-100 rounded-xl pl-10 pr-4 text-xs font-medium text-gray-700 outline-none"
+                  className="w-full h-full bg-gray-50 border border-gray-100 rounded-xl pl-10 pr-20 text-xs font-medium text-gray-700 outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/10 transition-all"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => { if(searchQuery.trim()) setShowSearchResults(true) }}
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                {searchQuery && (
+                  <button type="button" onClick={() => { setSearchQuery(""); setShowSearchResults(false); }} className="absolute right-12 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#e8621a]">
+                    <X size={14} />
+                  </button>
+                )}
                 <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#e8621a] text-white p-1.5 rounded-lg">
                   <FiArrowRight size={14} />
                 </button>
+                
+                {/* Mobile Search Dropdown */}
+                {showSearchResults && (searchQuery.trim() !== "") && (
+                  <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-xl shadow-[0_10px_40px_rgba(242,141,88,0.18)] border border-orange-100 py-3 z-[9999] max-h-[300px] overflow-y-auto">
+                    {isSearching ? (
+                      <div className="px-4 py-3 text-xs text-gray-500 font-medium flex items-center gap-2">
+                         <span className="w-3 h-3 rounded-full border-2 border-[#e8621a]/30 border-t-[#e8621a] animate-spin"></span>
+                         Searching...
+                      </div>
+                    ) : (searchResults.pujas.length === 0 && searchResults.pandits.length === 0) ? (
+                      <div className="px-4 py-3 text-xs text-gray-500 font-medium">No results found for "{searchQuery}"</div>
+                    ) : (
+                      <>
+                        {searchResults.pujas.length > 0 && (
+                          <div className="mb-2">
+                             <p className="px-4 py-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50">Pujas</p>
+                             {searchResults.pujas.map(p => (
+                               <Link key={p._id} to={`/pujas?search=${encodeURIComponent(p.pujaName)}${searchCity && searchCity !== "All Cities" ? `&city=${encodeURIComponent(searchCity)}` : ''}`} onClick={() => { setShowSearchResults(false); setMenuOpen(false); }} className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors group/item">
+                                 <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center shrink-0 text-[#e8621a]">
+                                   <Sparkles size={14} />
+                                 </div>
+                                 <div className="min-w-0 flex-1">
+                                   <p className="text-xs font-bold text-gray-700 group-hover/item:text-[#e8621a] transition-colors truncate">{p.pujaName}</p>
+                                   <p className="text-[10px] text-gray-400 font-medium truncate">{p.pujaType}</p>
+                                 </div>
+                               </Link>
+                             ))}
+                          </div>
+                        )}
+                        {searchResults.pandits.length > 0 && (
+                          <div>
+                             <p className="px-4 py-1.5 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50">Pandits</p>
+                             {searchResults.pandits.map(p => (
+                               <Link key={p._id} to={`/pandits?search=${encodeURIComponent(p.fullName)}${searchCity && searchCity !== "All Cities" ? `&city=${encodeURIComponent(searchCity)}` : ''}`} onClick={() => { setShowSearchResults(false); setMenuOpen(false); }} className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors group/item">
+                                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 overflow-hidden">
+                                    {p.profileImage ? <img src={`${import.meta.env.PROD ? "https://puja-path-sanskar-backend-live.onrender.com" : (import.meta.env.VITE_API_BASE_URL?.replace('/api','') || "")}/${p.profileImage.replace(/\\/g, "/")}`} className="w-full h-full object-cover" /> : <FiUsers size={14} />}
+                                 </div>
+                                 <div className="min-w-0 flex-1">
+                                   <p className="text-xs font-bold text-gray-700 group-hover/item:text-[#e8621a] transition-colors truncate">{p.fullName}</p>
+                                   <p className="text-[10px] text-gray-400 font-medium truncate">{p.city || "All Cities"}</p>
+                                 </div>
+                               </Link>
+                             ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </form>
 

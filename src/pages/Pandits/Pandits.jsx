@@ -84,7 +84,7 @@ const Pandits = () => {
   useEffect(() => { 
     const initialFilters = { 
       city: cityQuery, 
-      specializations: searchQuery ? [searchQuery] : [], 
+      specializations: [], 
       experience: "", 
       rating: "" 
     }
@@ -97,6 +97,8 @@ const Pandits = () => {
   }, [searchQuery])
 
   // Dynamic stats from API data
+  const [sortBy, setSortBy] = useState("Relevance")
+
   const totalPandits = allPandits.length
   const availablePandits = allPandits.filter(p => p.isActive !== false).length
   const uniqueCities = [...new Set(allPandits.map(p => p.city).filter(Boolean))].length
@@ -123,8 +125,27 @@ const Pandits = () => {
     return q.split(/\s+/).every(word => fields.includes(word))
   })
 
-  const totalPages = Math.ceil(filteredPandits.length / ITEMS_PER_PAGE)
-  const currentPandits = filteredPandits.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+  const sortedPandits = [...filteredPandits].sort((a, b) => {
+    if (sortBy === "Rating: High to Low") {
+      const ratingA = a.rating || 0
+      const ratingB = b.rating || 0
+      return ratingB - ratingA
+    }
+    if (sortBy === "Price: Low to High") {
+      const priceA = parseInt(a.basicPujaCharges) || Number.MAX_SAFE_INTEGER
+      const priceB = parseInt(b.basicPujaCharges) || Number.MAX_SAFE_INTEGER
+      return priceA - priceB
+    }
+    if (sortBy === "Experience: High to Low") {
+      const expA = parseFloat(a.experience) || parseFloat(a.totalExperience) || 0
+      const expB = parseFloat(b.experience) || parseFloat(b.totalExperience) || 0
+      return expB - expA
+    }
+    return 0
+  })
+
+  const totalPages = Math.ceil(sortedPandits.length / ITEMS_PER_PAGE)
+  const currentPandits = sortedPandits.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
 
   const handlePageChange = (page) => {
     setCurrentPage(page)
@@ -310,11 +331,11 @@ const Pandits = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t("pandits.sort")}</span>
-                  <select className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 font-semibold outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/15 shadow-sm transition-all cursor-pointer">
-                    <option>Relevance</option>
-                    <option>Rating: High to Low</option>
-                    <option>Price: Low to High</option>
-                    <option>Experience: High to Low</option>
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 font-semibold outline-none focus:border-[#e8621a] focus:ring-2 focus:ring-[#e8621a]/15 shadow-sm transition-all cursor-pointer">
+                    <option value="Relevance">Relevance</option>
+                    <option value="Rating: High to Low">Rating: High to Low</option>
+                    <option value="Price: Low to High">Price: Low to High</option>
+                    <option value="Experience: High to Low">Experience: High to Low</option>
                   </select>
                 </div>
               </div>
