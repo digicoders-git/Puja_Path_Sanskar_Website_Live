@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const baseURL = import.meta.env.PROD
-  ? "/api"
+  ? "https://api.pujapathsanskar.com/api"
   : import.meta.env.VITE_API_BASE_URL
 
 const api = axios.create({

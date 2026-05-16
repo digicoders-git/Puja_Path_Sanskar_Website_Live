@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next"
 import AppDownloadModal from "../../components/ui/AppDownloadModal"
 
 const BACKEND_URL = import.meta.env.PROD 
-  ? "https://puja-path-sanskar-backend-live.onrender.com" 
+  ? "https://api.pujapathsanskar.com" 
   : import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
 
 const InterestModal = ({ puja, onClose }) => {

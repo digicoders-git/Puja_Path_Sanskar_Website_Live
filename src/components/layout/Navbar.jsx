@@ -336,7 +336,7 @@ const Navbar = ({ navRef }) => {
                            {searchResults.pandits.map(p => (
                              <Link key={p._id} to={`/pandits?search=${encodeURIComponent(p.fullName)}${searchCity && searchCity !== "All Cities" ? `&city=${encodeURIComponent(searchCity)}` : ''}`} onClick={() => { setShowSearchResults(false); setMenuOpen(false); }} className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors group/item">
                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 overflow-hidden">
-                                  {p.profileImage ? <img src={`${import.meta.env.PROD ? "https://puja-path-sanskar-backend-live.onrender.com" : (import.meta.env.VITE_API_BASE_URL?.replace('/api','') || "")}/${p.profileImage.replace(/\\/g, "/")}`} className="w-full h-full object-cover" /> : <FiUsers size={14} />}
+                                  {p.profilePhoto ? <img src={`${import.meta.env.PROD ? "https://api.pujapathsanskar.com" : (import.meta.env.VITE_API_BASE_URL?.replace('/api','') || "")}/${p.profilePhoto.replace(/\\/g, "/")}`} className="w-full h-full object-cover" /> : <FiUsers size={14} />}
                                </div>
                                <div className="min-w-0 flex-1">
                                  <p className="text-xs font-bold text-gray-700 group-hover/item:text-[#e8621a] transition-colors truncate">{p.fullName}</p>
@@ -471,7 +471,7 @@ const Navbar = ({ navRef }) => {
                              {searchResults.pandits.map(p => (
                                <Link key={p._id} to={`/pandits?search=${encodeURIComponent(p.fullName)}${searchCity && searchCity !== "All Cities" ? `&city=${encodeURIComponent(searchCity)}` : ''}`} onClick={() => { setShowSearchResults(false); setMenuOpen(false); }} className="px-4 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors group/item">
                                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 overflow-hidden">
-                                    {p.profileImage ? <img src={`${import.meta.env.PROD ? "https://puja-path-sanskar-backend-live.onrender.com" : (import.meta.env.VITE_API_BASE_URL?.replace('/api','') || "")}/${p.profileImage.replace(/\\/g, "/")}`} className="w-full h-full object-cover" /> : <FiUsers size={14} />}
+                                    {p.profilePhoto ? <img src={`${import.meta.env.PROD ? "https://api.pujapathsanskar.com" : (import.meta.env.VITE_API_BASE_URL?.replace('/api','') || "")}/${p.profilePhoto.replace(/\\/g, "/")}`} className="w-full h-full object-cover" /> : <FiUsers size={14} />}
                                  </div>
                                  <div className="min-w-0 flex-1">
                                    <p className="text-xs font-bold text-gray-700 group-hover/item:text-[#e8621a] transition-colors truncate">{p.fullName}</p>
