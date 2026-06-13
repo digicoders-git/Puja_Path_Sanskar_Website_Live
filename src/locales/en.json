@@ -314,5 +314,18 @@
     "vadodara": "Vadodara",
     "varanasi": "Varanasi",
     "vrindavan": "Vrindavan"
+  },
+  "account_delete": {
+    "title": "Delete Account",
+    "description": "Please enter your registered mobile number below to request account deletion. Alternatively, you can send your deletion request directly to support@pujapathsanskar.com. Your account will be permanently deleted within 30 days.",
+    "warning": "Warning: This action is irreversible. Once your account is deleted, all your data, including booking history, will be permanently removed.",
+    "mobile": "Mobile Number",
+    "mobile_placeholder": "Enter mobile number",
+    "or": "OR",
+    "email": "Email Address",
+    "email_placeholder": "Enter email address",
+    "submit_btn": "Delete My Account",
+    "success_title": "Request Submitted!",
+    "success_desc": "Your account deletion request has been successfully received. All your associated data will be permanently removed within 30 days."
   }
 }

@@ -117,6 +117,7 @@ const Footer = () => {
               { label: "Register as Pandit", to: "/register" },
               { label: "Contact Us", to: "/contact" },
               { label: "Top Cities", to: "/pandits" },
+              { label: t("account_delete.title"), to: "/account-delete" },
             ].map(l => (
               <li key={l.label}>
                 <Link

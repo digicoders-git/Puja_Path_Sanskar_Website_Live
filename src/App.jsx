@@ -10,6 +10,7 @@ import Contact from "./pages/Contact/Contact"
 import Register from "./pages/Register/Register"
 import NotFound from "./pages/NotFound/NotFound"
 import Legal from "./pages/Legal/Legal"
+import AccountDelete from "./pages/AccountDelete/AccountDelete"
 import Loader from "./components/ui/Loader"
 import GlobalAppCTA from "./components/ui/GlobalAppCTA"
 import WelcomePopup from "./components/ui/WelcomePopup"
@@ -33,7 +34,7 @@ function AppContent() {
       const nav = navRef.current
       const main = document.getElementById("main-content")
       if (nav && main) {
-        const transparentPages = ["/", "/pandits", "/pujas", "/contact", "/register", "/privacy", "/terms", "/refund"]
+        const transparentPages = ["/", "/pandits", "/pujas", "/contact", "/register", "/privacy", "/terms", "/refund", "/account-delete"]
         if (transparentPages.includes(location.pathname)) {
           main.style.paddingTop = '0px'
         } else {
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="/privacy" element={<Legal type="privacy" />} />
           <Route path="/terms" element={<Legal type="terms" />} />
           <Route path="/refund" element={<Legal type="refund" />} />
+          <Route path="/account-delete" element={<AccountDelete />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
