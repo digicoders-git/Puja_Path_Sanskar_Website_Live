@@ -9,6 +9,13 @@ const BACKEND_URL = import.meta.env.PROD
   ? "https://api.pujapathsanskar.com" 
   : import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
 
+const getMediaUrl = (path) => {
+  if (!path) return null
+  const clean = path.replace(/\\/g, "/")
+  if (clean.startsWith("http")) return clean
+  return `${BACKEND_URL}/${clean}`
+}
+
 const PanditCard = ({ pandit }) => {
   const [showBooking, setShowBooking] = useState(false)
   const [showVideo, setShowVideo] = useState(false)
@@ -27,11 +34,8 @@ const PanditCard = ({ pandit }) => {
     ? t("pandits.about_desc", { exp: pandit.experience, spec: specialization, defaultValue: `Experienced Pandit with ${pandit.experience} of practice. Specializes in ${specialization}.` })
     : ""
 
-  const profilePhotoUrl = pandit.profilePhoto
-    ? `${BACKEND_URL}/${pandit.profilePhoto.replace(/\\/g, "/")}`
-    : "/images/pandit_intro_thumb.png"
-
-  const videoSrc = pandit.introVideo ? `${BACKEND_URL}/${pandit.introVideo.replace(/\\/g, "/")}` : null
+  const profilePhotoUrl = getMediaUrl(pandit.profilePhoto) || "/images/pandit_intro_thumb.png"
+  const videoSrc = getMediaUrl(pandit.introVideo)
 
   // Extra skills badges
   const skills = [
@@ -150,12 +154,12 @@ const PanditCard = ({ pandit }) => {
                    <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
                       {pandit.pujaPhotos?.map((img, i) => (
                         <div key={i} className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shrink-0">
-                           <img src={`${BACKEND_URL}/${img.replace(/\\/g, "/")}`} className="w-full h-full object-cover" />
+                           <img src={getMediaUrl(img)} className="w-full h-full object-cover" />
                         </div>
                       ))}
                       {pandit.pujaVideoClips?.map((vid, i) => (
-                        <div key={i} className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shrink-0 relative cursor-pointer" onClick={() => { setActiveVid(`${BACKEND_URL}/${vid.replace(/\\/g, "/")}`); setShowVideo(true); }}>
-                           <video src={`${BACKEND_URL}/${vid.replace(/\\/g, "/")}`} className="w-full h-full object-cover" />
+                        <div key={i} className="w-20 h-20 rounded-xl overflow-hidden border border-gray-100 shrink-0 relative cursor-pointer" onClick={() => { setActiveVid(getMediaUrl(vid)); setShowVideo(true); }}>
+                           <video src={getMediaUrl(vid)} className="w-full h-full object-cover" />
                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                               <FiPlay className="text-white fill-white" size={12} />
                            </div>

@@ -16,6 +16,13 @@ const BACKEND_URL = import.meta.env.PROD
   ? "https://api.pujapathsanskar.com" 
   : import.meta.env.VITE_API_BASE_URL?.replace("/api", "") || ""
 
+const getMediaUrl = (path) => {
+  if (!path) return null
+  const clean = path.replace(/\\/g, "/")
+  if (clean.startsWith("http")) return clean
+  return `${BACKEND_URL}/${clean}`
+}
+
 const InterestModal = ({ puja, onClose }) => {
   const [form, setForm] = useState({ name: "", mobile: "", message: "" })
   const [loading, setLoading] = useState(false)
@@ -194,7 +201,7 @@ const PujaCard = ({ puja }) => {
     ? puja.whatIsIncluded.split(",").map(s => s.trim()).filter(Boolean)
     : []
 
-  const imageUrl = puja.image ? `${BACKEND_URL}/${puja.image.replace(/\\/g, "/")}` : null
+  const imageUrl = getMediaUrl(puja.image)
 
   return (
     <>
