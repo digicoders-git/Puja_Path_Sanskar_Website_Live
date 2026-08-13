@@ -281,7 +281,7 @@ const Register = () => {
                       </div>
                       <div className="md:col-span-2 group"><label className={labelCls}>{t("register.points.specialization")}<RequiredStar /></label>
                         <div className="flex flex-wrap gap-2">
-                          {["Grih Pravesh", "Vivah", "Satyanarayan Katha", "Rudrabhishek", "Sunderkand", "Jagran", "Bhagwat Katha"].map(s => (
+                          {["Grih Pravesh", "Vivah", "Satyanarayan Katha", "Rudrabhishek", "Sunderkand", "Jagran", "Bhagwat Katha", "Anushthan", "Sanskar"].map(s => (
                             <button key={s} type="button" onClick={() => handleMultiSelect('specializations', s)}
                               className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${formData.specializations.includes(s) ? "bg-[#e8621a] text-white border-[#e8621a]" : "bg-white text-gray-500 border-gray-200 hover:border-[#e8621a]"}`}>{s}</button>
                           ))}
